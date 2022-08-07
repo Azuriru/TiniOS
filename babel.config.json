@@ -1,0 +1,15 @@
+{
+    "plugins": [
+        // ["wildcard", {
+        //     "exts": ["ts", "json"]
+        // }],
+        ["react-html-attrs"]
+    ],
+    "presets": [
+        ["@babel/preset-react", {
+            // New JSX transform
+            "runtime": "automatic"
+        }],
+        "@babel/preset-typescript"
+    ]
+}

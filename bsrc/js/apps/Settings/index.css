@@ -1,0 +1,507 @@
+/* Custom titlebar */
+.window-settings .settings-titlebar {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.window-settings .titlebar .window-buttons .window-button {
+    width: 48px;
+    height: 32px;
+}
+
+.window-settings.panel-view .settings-titlebar {
+    flex: 1 0 200px;
+    max-width: 340px;
+    background: #ffffff3b;
+}
+
+.window-settings.panel-view .window-buttons {
+    flex: 1 1 600px;
+    justify-content: flex-end;
+}
+
+.window-settings .settings-titlebar .back.mi {
+    font-size: 20px;
+    padding: 6px 16px;
+    transition: .3s background-color;
+}
+
+.window-settings:not(.panel-view) .settings-titlebar .back {
+    display: none;
+}
+
+.window-settings .settings-titlebar .back:hover {
+    background-color: black;
+}
+
+.window-settings .settings-titlebar .back + .title {
+    padding: 12px 16px 4px;
+}
+
+.window-settings .settings-titlebar .back.mi + .title {
+    padding: 8px 16px;
+}
+
+/* App */
+.settings-app {
+    display: flex;
+    /* align-items: center;
+    justify-content: center; */
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+}
+
+/* Search */
+.settings-search {
+    display: flex;
+    align-items: center;
+    border: 2px solid white;
+    height: 36px;
+    padding: 4px 4px 4px 8px;
+}
+
+.settings-search .search-input {
+    display: flex;
+    width: 100%;
+    font-size: 14px;
+    margin-right: 4px;
+}
+
+.settings-search .search-icon {
+    transform: scaleX(-1);
+}
+
+/* Categories */
+.settings-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+
+.settings-menu .settings-menu-header {
+    font-size: 36px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.settings-menu .settings-search {
+    width: -webkit-fill-available;
+    max-width: 360px;
+    margin: 12px 12px 60px;
+}
+
+.settings-menu .settings-categories {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1000px;
+}
+
+.settings-menu .settings-categories .settings-category {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex: 0 0 260px;
+    height: 80px;
+    margin: 10px 20px;
+    padding: 6px 12px;
+    background: #ffffff24;
+}
+
+.settings-categories .settings-category .category-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    margin-right: 12px;
+    position: relative;
+}
+
+.settings-categories .settings-category .category-icon .mi {
+    font-size: 46px;
+}
+
+.settings-categories .settings-category .category-icon .mi:nth-of-type(2) {
+    position: absolute;
+}
+
+.settings-categories .settings-category .category-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-categories .settings-category .category-info .category-header {
+    display: flex;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.settings-categories .settings-category .category-info .category-desc {
+    font-size: 12px;
+}
+
+/* Specific categories */
+/** Personalization **/
+.settings-categories .settings-category.personalization .category-icon .mi:first-of-type {
+    clip-path: polygon(80% 0, 48% 29%, 68% 50%, 100% 20%, 100% 100%, 0 100%, 0 0);
+    transform: translateY(4px);
+}
+
+.settings-categories .settings-category.personalization .category-icon .mi:last-of-type {
+    font-size: 36px;
+    top: -3px;
+    right: -6px;
+}
+
+/** Apps **/
+.settings-categories .settings-category.apps .category-icon .mi {
+    font-size: 56px;
+}
+
+/** Time & Date **/
+.settings-categories .settings-category.time .category-icon .mi:first-of-type {
+    font-size: 30px;
+    position: absolute;
+    top: 4px;
+    left: 3px;
+    clip-path: polygon(100% 50%, 78% 50%, 78% 58%, 43% 58%, 50% 82%, 63% 82%, 70% 100%, 0 100%, 0 0, 100% 0);
+}
+
+.settings-categories .settings-category.time .category-icon .mi:last-of-type {
+    font-size: 30px;
+    right: 2px;
+    bottom: 2px;
+}
+
+/* Panels */
+.settings-panel {
+    display: flex;
+    flex: 1 1 800px;
+    /* justify-content: center; */
+    height: 100%;
+    width: 100%;
+}
+
+/** Sidebar **/
+.settings-panel .settings-sidebar {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 200px;
+    background: #ffffff3b;
+    max-width: 340px;
+    overflow-y: auto;
+}
+
+.settings-panel .settings-sidebar::-webkit-scrollbar {
+    width: 8px
+}
+
+.settings-panel .settings-sidebar .sidebar-home {
+    margin: 26px 0 12px;
+}
+
+.settings-panel .settings-sidebar .settings-search {
+    margin: 12px 10px;
+}
+
+.settings-panel .settings-sidebar [class^='sidebar']:not(.sidebar-search) {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    height: 24px;
+    padding: 0 10px 0 14px;
+}
+
+.settings-panel .settings-sidebar [class^='sidebar']:not(.sidebar-search):not(.sidebar-home) {
+    margin: 12px 0;
+}
+
+.settings-panel .settings-sidebar .sidebar-option {
+    border-left: 4px solid transparent;
+    padding-left: 10px !important;
+    transition: .3s border-color;
+}
+
+.settings-panel .settings-sidebar .sidebar-option.selected {
+    border-color: rgb(var(--color-rgb));
+}
+
+.settings-panel .settings-sidebar .sidebar-home .mi,
+.settings-panel .settings-sidebar .sidebar-option .option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+/*** Taskbar lel ***/
+.settings-panel .settings-sidebar .sidebar-option .option-icon.taskbar {
+    border: 1px solid white;
+    height: 10px;
+    width: 16px;
+    margin: 0 13px 0 1px;
+}
+
+.settings-panel .settings-sidebar .sidebar-option .option-icon.taskbar::before {
+    content: '';
+    border-top: 1px solid white;
+    width: 100%;
+    transform: translateY(1px);
+}
+
+/*** Start ***/
+.settings-panel .settings-sidebar .sidebar-option .option-icon.start {
+    transform: rotate(90deg) scaleX(-1);
+}
+
+.settings-panel .settings-sidebar .sidebar-option .option-title {
+    letter-spacing: 1px;
+}
+
+/** Main **/
+.settings-panel .settings-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 600px;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.settings-panel .settings-main > .settings-header {
+    font-size: 24px;
+    padding: 40px 30px 12px 30px;
+}
+
+.settings-panel .settings-main .settings-sections {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0 30px 40px 30px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.settings-panel .settings-main .settings-sections .settings-section {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+}
+
+.settings-panel .settings-main .settings-sections .settings-section > .settings-header {
+    font-size: 20px;
+    margin: 12px 0;
+}
+
+.settings-panel .settings-main .settings-sections .settings-section .settings-groups .settings-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.settings-panel .settings-main .settings-sections .settings-section .settings-groups .settings-group .group-info {
+    font-size: 16px;
+    margin: 12px 0;
+}
+
+/* Misc shit */
+.settings-panel .display .dropdown {
+    width: 320px;
+}
+
+.settings-panel .date-time .dropdown {
+    width: 420px;
+}
+
+/* Search */
+.search-apps {
+    display: flex;
+    align-items: center;
+    border: 2px solid white;
+    width: 260px;
+    height: 36px;
+    padding: 4px 4px 4px 8px;
+    margin: 12px 0;
+}
+
+.search-apps .search-input {
+    display: flex;
+    flex-grow: 1;
+    font-size: 14px;
+    margin-right: 4px;
+}
+
+.search-apps .search-icon {
+    transform: scaleX(-1);
+}
+
+/* Mini dropdown because it's so cute */
+.dropdown.mini {
+    font-size: 14px;
+    width: fit-content;
+}
+
+.dropdown.mini .dropdown-select {
+    border: none;
+    padding: 0 12px 0 2px;
+}
+
+.dropdown.mini .dropdown-select .dropdown-text::before {
+    content: 'Sort by: ';
+    color: #ababab;
+}
+
+.dropdown.mini .dropdown-select .dropdown-arrow {
+    width: 26px;
+}
+
+.dropdown.mini .dropdown-select .dropdown-arrow::before,
+.dropdown.mini .dropdown-select .dropdown-arrow::after {
+    height: 10px;
+}
+
+.dropdown.mini .dropdown-options {
+    background: #2b2b2b;
+    border: 1px solid #d4d4d4;
+    color: #d4d4d4;
+    width: fit-content;
+    left: 50%;
+    transform: translate(-50%, 30px);
+    padding: 4px;
+    white-space: nowrap;
+}
+
+.dropdown.mini.open .dropdown-options {
+    transform: translate(-50%, 44px);
+    overflow-y: visible;
+}
+
+.dropdown.mini .dropdown-options::before,
+.dropdown.mini .dropdown-options::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.dropdown.mini .dropdown-options::before {
+    border-bottom: 8px solid white;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+}
+
+.dropdown.mini .dropdown-options::after {
+    border-bottom: 7px solid #2b2b2b;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+}
+
+.dropdown.mini .dropdown-options .dropdown-option {
+    background: transparent;
+    color: inherit;
+    height: 32px;
+    padding: 0px 8px;
+}
+
+.dropdown.mini .dropdown-options .dropdown-option:hover,
+.dropdown.mini .dropdown-options .dropdown-option.selected:hover {
+    background: #444444;
+}
+
+.dropdown.mini .dropdown-options .dropdown-option.selected {
+    background: transparent;
+    color: inherit;
+}
+
+.dropdown.mini .dropdown-options .dropdown-option::before {
+    content: '';
+    font-family: 'Material Icons';
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+.dropdown.mini .dropdown-options .dropdown-option.selected::before {
+    content: 'check';
+}
+
+/** App List **/
+.app-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-list .app-item {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    height: 64px;
+    padding: 10px;
+    margin-bottom: 4px;
+    overflow: hidden;
+    transition: .3s height, .3s background-color;;
+}
+
+.app-list .app-item.open {
+    background-color: #252525;
+    height: 142px;
+}
+
+.app-list .app-item .app-actions {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.app-list .app-item .app-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.app-list .app-item .app-info .app-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background-color: hsl(var(--color-hue, 180), var(--color-sat, 50%), var(--color-lig, 25%));
+    width: 44px;
+    height: 44px;
+    margin-right: 8px;
+}
+
+.app-list .app-item .app-info .primary {
+    flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.app-list .app-item .app-name,
+.app-list .app-item .app-author {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.app-list .app-item .app-size,
+.app-list .app-item .app-date {
+    text-align: right;
+}
+
+.app-list .app-item .app-author,
+.app-list .app-item .app-date {
+    color: #c5c5c5;
+    margin-top: 4px;
+}
