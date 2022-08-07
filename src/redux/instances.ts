@@ -27,6 +27,9 @@ const instances = createSlice({
         lastId: 1
     }),
     reducers: {
+        // getlastInstanceIndex(state, action: PayloadAction<>) {
+
+        // },
         addInstance(state, action: PayloadAction<NewInstance>) {
             instancesAdapter.addOne(state, {
                 ...action.payload,
