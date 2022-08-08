@@ -21,7 +21,16 @@ export function Desktop() {
 }
 
 let lastIndex = 0;
-const getStyles = (multiplier: number, { width = 400, height = 300, minWidth = 200, minHeight = 200 } = {}) => {
+// An excellent name of our accumulated genius,
+// Dimensions by boo and Window by yours truly. WinDim
+type WindowDimensions = {
+    width?: number;
+    height?: number;
+    minWidth?: number;
+    minHeight?: number;
+};
+
+const style = (multiplier: number, { width = 400, height = 300, minWidth = 200, minHeight = 200 }: WindowDimensions = {}) => {
     const { innerWidth, innerHeight } = window;
     const w = width < minWidth ? minWidth : width;
     const h = height < minHeight ? minHeight : height;
@@ -53,7 +62,7 @@ function Instance({ instance }: InstanceProps) {
     return (
         <div
             class={classNames("window")}
-            style={getStyles(instance.id, window)}
+            style={style(instance.id, window)}
         >
             <div class="titlebar">
                 <div class="title">{instance.appId}</div>
