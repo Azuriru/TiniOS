@@ -133,7 +133,7 @@ type StartItemProps = {
     contextmenu?: ContextMenuItemProps[];
     closeStart?: boolean;
     props?: object;
-}
+};
 
 export function StartItem({ icon, children, classes, onClick, contextmenu: contextMenuItems, ...props }: StartItemProps) {
     const onContextMenu = () => {
@@ -230,7 +230,7 @@ type ContextMenuItemProps = {
     text: string;
     onClick?: ReactEventHandler;
     showContext: boolean;
-}
+};
 
 export function ContextMenuItem({ className, text, onClick, showContext }: ContextMenuItemProps) {
     return (

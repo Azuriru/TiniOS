@@ -1,0 +1,89 @@
+.dragsizable {
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    min-height: 60px;
+    min-width: 100px;
+    position: absolute;
+}
+
+.drag-handle {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, .1);
+    padding: 6px;
+    cursor: move;
+}
+
+.move-handle {
+    position: absolute;
+    background-color: rgba(255, 255, 255, .1);
+}
+
+.corner-handle {
+    width: 10px;
+    height: 10px;
+}
+
+.handle-top {
+    top: 0;
+    left: 10px;
+    right: 10px;
+    height: 10px;
+    cursor: n-resize;
+}
+
+.handle-top-right {
+    top: 0;
+    right: 0;
+    cursor: ne-resize;
+}
+
+.handle-right {
+    top: 10px;
+    right: 0;
+    bottom: 10px;
+    width: 10px;
+    cursor: e-resize;
+}
+
+.handle-bottom-right {
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+}
+
+.handle-bottom {
+    right: 10px;
+    bottom: 0;
+    left: 10px;
+    height: 10px;
+    cursor: s-resize;
+}
+
+.handle-bottom-left {
+    bottom: 0;
+    left: 0;
+    cursor: sw-resize;
+}
+
+.handle-left {
+    top: 10px;
+    left: 0;
+    bottom: 10px;
+    width: 10px;
+    cursor: w-resize;
+}
+
+.handle-top-left {
+    top: 0;
+    left: 0;
+    cursor: nw-resize;
+}

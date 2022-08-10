@@ -6,7 +6,7 @@ const ElectronReloadPlugin = createReloadPlugin({
 });
 
 module.exports = {
-    target: 'electron-renderer',
+    target: 'web',
     entry: './src/index.tsx',
     output: {
         path: path.join(__dirname, 'output'),

@@ -13,7 +13,7 @@ import './Taskbar.css';
 type AppPreview = {
     name: string;
     hiding: boolean;
-}
+};
 
 export function Taskbar() {
     const apps = [
@@ -75,7 +75,8 @@ export function Taskbar() {
 
 type AppProps = {
     name: string;
-}
+};
+
 export function App({ name }: AppProps) {
     const [ hovered, setHovered ] = useState(false);
     const dispatch = useDispatch();
