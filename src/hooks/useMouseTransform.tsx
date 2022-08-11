@@ -93,13 +93,13 @@ export default function useMouseTransform(
             newHeight = clampedHeight;
         }
 
-        setOffset({
-            top: newTop,
-            left: startOffset.current.left
-        });
         setSize({
             width: startSize.current.width - deltaX,
             height: newHeight
+        });
+        setOffset({
+            top: newTop,
+            left: startOffset.current.left
         });
     });
 
@@ -138,13 +138,13 @@ export default function useMouseTransform(
             newWidth = clampedWidth;
         }
 
-        setOffset({
-            top: startOffset.current.top,
-            left: newLeft
-        });
         setSize({
             width: newWidth,
             height: newHeight
+        });
+        setOffset({
+            top: startOffset.current.top,
+            left: newLeft
         });
     });
 
@@ -158,13 +158,13 @@ export default function useMouseTransform(
             newWidth = clampedWidth;
         }
 
-        setOffset({
-            top: startOffset.current.top,
-            left: newLeft
-        });
         setSize({
             width: newWidth,
             height: startSize.current.height
+        });
+        setOffset({
+            top: startOffset.current.top,
+            left: newLeft
         });
     });
 
@@ -184,56 +184,118 @@ export default function useMouseTransform(
             newWidth = clampedWidth;
         }
 
-        setOffset({
-            top: newTop,
-            left: newLeft
-        });
         setSize({
             width: newWidth,
             height: newHeight
         });
+        setOffset({
+            top: newTop,
+            left: newLeft
+        });
     });
 
+    const startTrackingMouseResizeBabyn = (e: MouseEvent) => {
+        if (e.button !== 0) return;
 
-    // const startTrackingMouseResizeBottomRight = useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
-    //     setSize({
-    //         width: startSize.current.width - deltaX,
-    //         height: startSize.current.height - deltaY
-    //     });
-    // });
+        const { width, height } = this.window.getBoundingClientRect();
+        const offsetX = e.clientX;
+        const offsetY = e.clientY;
+        let mousemove;
 
-    // const startTrackingMouseResizeBottom = useMouseTracker(storeStartOffsets, ({ deltaY }) => {
-    //     setSize({
-    //         width: startSize.current.width,
-    //         height: startSize.current.height - deltaY
-    //     });
-    // });
+        this.window.style.transition = 'none';
+
+        window.addEventListener('mousemove', mousemove = e => {
+            e.preventDefault();
+
+            const { x, y, right, bottom } = this.window.getBoundingClientRect();
+            const { minWidth, minHeight } = this.window.style;
+
+            const direction = d => 'left'.includes(d);
+
+            if (direction('nw')) {
+                if (e.clientX > right - parseInt(minWidth) || e.clientY > bottom - parseInt(minHeight)) return;
+                this.window.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                this.window.style.height = `${height - e.clientY + offsetY}px`;
+                this.window.style.width = `${width - e.clientX + offsetX}px`;
+                return;
+            }
+
+            if (direction('n')) {
+                if (e.clientY > bottom - parseInt(minHeight)) return;
+                this.window.style.height = `${height - e.clientY + offsetY}px`;
+                this.window.style.transform = `translate(${x}px, ${e.clientY}px)`;
+            }
+
+            if (direction('e')) {
+                this.window.style.width = `${e.clientX - x}px`;
+            }
+
+            if (direction('s')) {
+                this.window.style.height = `${e.clientY - y}px`;
+            }
+
+            if (direction('w')) {
+                if (e.clientX > right - parseInt(minWidth)) return;
+                this.window.style.width = `${width - e.clientX + offsetX}px`;
+                this.window.style.transform = `translate(${e.clientX}px, ${y}px)`;
+            }
+        });
+    }
 
     const startTrackingMouseResizeAll = (dir: string) => {
         return useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
-            let newHeight = startSize.current.height + deltaY;
-            let newWidth = startSize.current.width + deltaX;
-            let newTop = startOffset.current.top - deltaY;
-            let newLeft = startOffset.current.left - deltaX;
+            const direction = (d: string) => dir.includes(d);
 
+            // newHeight
+            // top/tl/tr: startSize.current.height + deltaY;
+            // br/bl: startSize.current.height - deltaY;
+
+            // newWidth
+            // left/tl/bl: startSize.current.width + deltaX;
+
+            // newTop
+            // top/tl/tr: startOffset.current.top - deltaY;
+
+            // newLeft
+            // left/tl/bl: startOffset.current.left - deltaX;
+
+            // Top, TR, BL, L, TL
             if (minSizes !== undefined) {
-                const clampedHeight = Math.max(minSizes.height, newHeight);
-                newTop -= clampedHeight - newHeight;
-                newHeight = clampedHeight;
+                // Top/TL/TR
+                // const clampedHeight = Math.max(minSizes.height, newHeight);
+                // newTop -= clampedHeight - newHeight;
+                // newHeight = clampedHeight;
 
-                const clampedWidth = Math.max(minSizes.width, newWidth);
-                newLeft -= clampedWidth - newWidth;
-                newWidth = clampedWidth;
+                // BL
+                // const clampedHeight = Math.max(minSizes.height, newHeight);
+                // newHeight = clampedHeight;
+
+                // Left/TL/BL
+                // const clampedWidth = Math.max(minSizes.width, newWidth);
+                // newLeft -= clampedWidth - newWidth;
+                // newWidth = clampedWidth;
             }
 
-            setOffset({
-                top: newTop,
-                left: newLeft
-            });
-            setSize({
-                width: newWidth,
-                height: newHeight
-            });
+            // setSize
+            // Width:
+            //   top: startSize.current.width
+            //   right/br: startSize.current.width - deltaX
+            //   tr: startSize.current.width - deltaX
+            //   bottom: startSize.current.width
+            //   left/bl/tl: newWidth
+            // Height:
+            //   top/tr/bl/tl: newHeight
+            //   right: startSize.current.height
+            //   bottom/br: startSize.current.height - deltaY
+            //   left: startSize.current.height
+
+            // setOffset
+            // Top:
+            //   top/tr/tl: newTop
+            //   left/bl: startOffset.current.top
+            // Left:
+            //   top/tr: startOffset.current.left
+            //   left/bl/tl: newLeft
         });
     }
 
