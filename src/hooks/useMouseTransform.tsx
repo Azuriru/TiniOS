@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, RefObject } from 'react';
-
 import useMouseTracker from './useMouseTracker';
+import { startsWith } from '../util/string';
 
 type SizeState = { width: number; height: number; } | null;
 
@@ -63,253 +63,72 @@ export default function useMouseTransform(
         });
     });
 
-    const startTrackingMouseResizeTop = useMouseTracker(storeStartOffsets, ({ deltaY }) => {
-        let newHeight = startSize.current.height + deltaY;
-        let newTop = startOffset.current.top - deltaY;
-
-        if (minSizes !== undefined) {
-            const clampedHeight = Math.max(minSizes.height, newHeight);
-            newTop -= clampedHeight - newHeight;
-            newHeight = clampedHeight;
-        }
-
-        setSize({
-            width: startSize.current.width,
-            height: newHeight
-        });
-        setOffset({
-            top: newTop,
-            left: startOffset.current.left
-        });
-    });
-
-    const startTrackingMouseResizeTopRight = useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
-        let newHeight = startSize.current.height + deltaY;
-        let newTop = startOffset.current.top - deltaY;
-
-        if (minSizes !== undefined) {
-            const clampedHeight = Math.max(minSizes.height, newHeight);
-            newTop -= clampedHeight - newHeight;
-            newHeight = clampedHeight;
-        }
-
-        setSize({
-            width: startSize.current.width - deltaX,
-            height: newHeight
-        });
-        setOffset({
-            top: newTop,
-            left: startOffset.current.left
-        });
-    });
-
-    const startTrackingMouseResizeRight = useMouseTracker(storeStartOffsets, ({ deltaX }) => {
-        setSize({
-            width: startSize.current.width - deltaX,
-            height: startSize.current.height
-        });
-    });
-
-    const startTrackingMouseResizeBottomRight = useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
-        setSize({
-            width: startSize.current.width - deltaX,
-            height: startSize.current.height - deltaY
-        });
-    });
-
-    const startTrackingMouseResizeBottom = useMouseTracker(storeStartOffsets, ({ deltaY }) => {
-        setSize({
-            width: startSize.current.width,
-            height: startSize.current.height - deltaY
-        });
-    });
-
-    const startTrackingMouseResizeBottomLeft = useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
-        let newHeight = startSize.current.height - deltaY;
-        let newWidth = startSize.current.width + deltaX;
-        let newLeft = startOffset.current.left - deltaX;
-
-        if (minSizes !== undefined) {
-            const clampedHeight = Math.max(minSizes.height, newHeight);
-            newHeight = clampedHeight;
-
-            const clampedWidth = Math.max(minSizes.width, newWidth);
-            newLeft -= clampedWidth - newWidth;
-            newWidth = clampedWidth;
-        }
-
-        setSize({
-            width: newWidth,
-            height: newHeight
-        });
-        setOffset({
-            top: startOffset.current.top,
-            left: newLeft
-        });
-    });
-
-    const startTrackingMouseResizeLeft = useMouseTracker(storeStartOffsets, ({ deltaX }) => {
-        let newWidth = startSize.current.width + deltaX;
-        let newLeft = startOffset.current.left - deltaX;
-
-        if (minSizes !== undefined) {
-            const clampedWidth = Math.max(minSizes.width, newWidth);
-            newLeft -= clampedWidth - newWidth;
-            newWidth = clampedWidth;
-        }
-
-        setSize({
-            width: newWidth,
-            height: startSize.current.height
-        });
-        setOffset({
-            top: startOffset.current.top,
-            left: newLeft
-        });
-    });
-
-    const startTrackingMouseResizeTopLeft = useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
-        let newHeight = startSize.current.height + deltaY;
-        let newWidth = startSize.current.width + deltaX;
-        let newTop = startOffset.current.top - deltaY;
-        let newLeft = startOffset.current.left - deltaX;
-
-        if (minSizes !== undefined) {
-            const clampedHeight = Math.max(minSizes.height, newHeight);
-            newTop -= clampedHeight - newHeight;
-            newHeight = clampedHeight;
-
-            const clampedWidth = Math.max(minSizes.width, newWidth);
-            newLeft -= clampedWidth - newWidth;
-            newWidth = clampedWidth;
-        }
-
-        setSize({
-            width: newWidth,
-            height: newHeight
-        });
-        setOffset({
-            top: newTop,
-            left: newLeft
-        });
-    });
-
-    const startTrackingMouseResizeBabyn = (e: MouseEvent) => {
-        if (e.button !== 0) return;
-
-        const { width, height } = this.window.getBoundingClientRect();
-        const offsetX = e.clientX;
-        const offsetY = e.clientY;
-        let mousemove;
-
-        this.window.style.transition = 'none';
-
-        window.addEventListener('mousemove', mousemove = e => {
-            e.preventDefault();
-
-            const { x, y, right, bottom } = this.window.getBoundingClientRect();
-            const { minWidth, minHeight } = this.window.style;
-
-            const direction = d => 'left'.includes(d);
-
-            if (direction('nw')) {
-                if (e.clientX > right - parseInt(minWidth) || e.clientY > bottom - parseInt(minHeight)) return;
-                this.window.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-                this.window.style.height = `${height - e.clientY + offsetY}px`;
-                this.window.style.width = `${width - e.clientX + offsetX}px`;
-                return;
-            }
-
-            if (direction('n')) {
-                if (e.clientY > bottom - parseInt(minHeight)) return;
-                this.window.style.height = `${height - e.clientY + offsetY}px`;
-                this.window.style.transform = `translate(${x}px, ${e.clientY}px)`;
-            }
-
-            if (direction('e')) {
-                this.window.style.width = `${e.clientX - x}px`;
-            }
-
-            if (direction('s')) {
-                this.window.style.height = `${e.clientY - y}px`;
-            }
-
-            if (direction('w')) {
-                if (e.clientX > right - parseInt(minWidth)) return;
-                this.window.style.width = `${width - e.clientX + offsetX}px`;
-                this.window.style.transform = `translate(${e.clientX}px, ${y}px)`;
-            }
-        });
-    }
-
-    const startTrackingMouseResizeAll = (dir: string) => {
+    const startTrackingMouseResizeAll = (direction: string) => {
         return useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
-            const direction = (d: string) => dir.includes(d);
+            const { width, height } = startSize.current;
+            const { top, left } = startOffset.current;
 
-            // newHeight
-            // top/tl/tr: startSize.current.height + deltaY;
-            // br/bl: startSize.current.height - deltaY;
+            let [ newHeight, newWidth ] = [ width, height];
+            let [ newTop, newLeft ] = [ top, left ];
 
-            // newWidth
-            // left/tl/bl: startSize.current.width + deltaX;
+            const dir = (d: string) => startsWith(d, '!')
+                ? direction === d.slice(1)
+                : direction.includes(d);
 
-            // newTop
-            // top/tl/tr: startOffset.current.top - deltaY;
+            if (dir('n')) {
+                newHeight + deltaY;
+                newTop - deltaY;
+            }
+            if (dir('s') && dir('!s'))
+                newHeight - deltaY;
+            if (dir('w'))
+                newWidth + deltaX;
+            if (dir('e'))
+                newLeft - deltaX;
 
-            // newLeft
-            // left/tl/bl: startOffset.current.left - deltaX;
+            if (minSizes !== undefined && (dir('n') || dir('w'))) {
+                if (dir('n')) {
+                    const clampedHeight = Math.max(minSizes.height, newHeight);
+                    newTop -= clampedHeight - newHeight;
+                    newHeight = clampedHeight;
+                }
 
-            // Top, TR, BL, L, TL
-            if (minSizes !== undefined) {
-                // Top/TL/TR
-                // const clampedHeight = Math.max(minSizes.height, newHeight);
-                // newTop -= clampedHeight - newHeight;
-                // newHeight = clampedHeight;
+                if (dir('!sw')) {
+                    const clampedHeight = Math.max(minSizes.height, newHeight);
+                    newHeight = clampedHeight;
+                }
 
-                // BL
-                // const clampedHeight = Math.max(minSizes.height, newHeight);
-                // newHeight = clampedHeight;
-
-                // Left/TL/BL
-                // const clampedWidth = Math.max(minSizes.width, newWidth);
-                // newLeft -= clampedWidth - newWidth;
-                // newWidth = clampedWidth;
+                if (dir('w')) {
+                    const clampedWidth = Math.max(minSizes.width, newWidth);
+                    newLeft -= clampedWidth - newWidth;
+                    newWidth = clampedWidth;
+                }
             }
 
-            // setSize
-            // Width:
-            //   top: startSize.current.width
-            //   right/br: startSize.current.width - deltaX
-            //   tr: startSize.current.width - deltaX
-            //   bottom: startSize.current.width
-            //   left/bl/tl: newWidth
-            // Height:
-            //   top/tr/bl/tl: newHeight
-            //   right: startSize.current.height
-            //   bottom/br: startSize.current.height - deltaY
-            //   left: startSize.current.height
-
-            // setOffset
-            // Top:
-            //   top/tr/tl: newTop
-            //   left/bl: startOffset.current.top
-            // Left:
-            //   top/tr: startOffset.current.left
-            //   left/bl/tl: newLeft
+            setSize({
+                width: newWidth,
+                height: newHeight
+            });
+            setOffset({
+                top: newTop,
+                left: newLeft
+            });
         });
     }
+
+    const direction = startTrackingMouseResizeAll;
 
     return {
         size,
         offset,
         startTrackingMouseDrag,
-        startTrackingMouseResizeTop,
-        startTrackingMouseResizeTopRight,
-        startTrackingMouseResizeRight,
-        startTrackingMouseResizeBottomRight,
-        startTrackingMouseResizeBottom,
-        startTrackingMouseResizeBottomLeft,
-        startTrackingMouseResizeLeft,
-        startTrackingMouseResizeTopLeft
+        startTrackingMouseResizeTop: direction('n'),
+        startTrackingMouseResizeTopRight: direction('ne'),
+        startTrackingMouseResizeRight: direction('e'),
+        startTrackingMouseResizeBottomRight: direction('sw'),
+        startTrackingMouseResizeBottom: direction('s'),
+        startTrackingMouseResizeBottomLeft: direction('se'),
+        startTrackingMouseResizeLeft: direction('e'),
+        startTrackingMouseResizeTopLeft: direction('ne')
     };
 }
