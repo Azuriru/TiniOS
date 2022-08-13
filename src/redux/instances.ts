@@ -39,11 +39,14 @@ const instances = createSlice({
         },
         addInstances(state, action: PayloadAction<{ instances: Instance[] }>) {
             instancesAdapter.setAll(state, action.payload.instances);
+        },
+        deleteInstance(state, action: PayloadAction<number>) {
+            instancesAdapter.removeOne(state, action.payload);
         }
     }
 });
 
-export const { addInstance, addInstances } = instances.actions;
+export const { addInstance, addInstances, deleteInstance } = instances.actions;
 
 export const { selectAll: selectAllInstances } = instancesAdapter.getSelectors<RootState>(
     state => state.instances

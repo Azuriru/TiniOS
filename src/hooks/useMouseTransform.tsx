@@ -14,8 +14,6 @@ type MinOffset = {
     left: number
 };
 
-// TODO: DRY this file
-
 export default function useMouseTransform(
     elementRef: RefObject<HTMLElement>,
     minSizes?: MinSizes,
@@ -67,24 +65,31 @@ export default function useMouseTransform(
         return useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
             const { width, height } = startSize.current;
             const { top, left } = startOffset.current;
-
-            let [ newHeight, newWidth ] = [ width, height];
-            let [ newTop, newLeft ] = [ top, left ];
-
             const dir = (d: string) => startsWith(d, '!')
                 ? direction === d.slice(1)
                 : direction.includes(d);
 
+            let newHeight, newWidth, newTop, newLeft;
+            // let [ newHeight, newWidth ] = [ width, height ];
+            // let [ newTop, newLeft ] = [ top, left ];
+
             if (dir('n')) {
-                newHeight + deltaY;
-                newTop - deltaY;
+                newHeight = height + deltaY;
+                newTop = top - deltaY;
             }
-            if (dir('s') && dir('!s'))
-                newHeight - deltaY;
-            if (dir('w'))
-                newWidth + deltaX;
-            if (dir('e'))
-                newLeft - deltaX;
+
+            if (dir('s')) {
+                newHeight = height - deltaY;
+            }
+
+            if (dir('w')) {
+                newLeft = left - deltaX;
+                newWidth = width + deltaX;
+            }
+
+            if (dir('e')) {
+                newWidth = width - deltaX;
+            }
 
             if (minSizes !== undefined && (dir('n') || dir('w'))) {
                 if (dir('n')) {
@@ -93,10 +98,10 @@ export default function useMouseTransform(
                     newHeight = clampedHeight;
                 }
 
-                if (dir('!sw')) {
-                    const clampedHeight = Math.max(minSizes.height, newHeight);
-                    newHeight = clampedHeight;
-                }
+                // if (dir('!sw')) {
+                //     const clampedHeight = Math.max(minSizes.height, newHeight);
+                //     newHeight = clampedHeight;
+                // }
 
                 if (dir('w')) {
                     const clampedWidth = Math.max(minSizes.width, newWidth);
@@ -105,14 +110,14 @@ export default function useMouseTransform(
                 }
             }
 
-            setSize({
-                width: newWidth,
-                height: newHeight
-            });
-            setOffset({
-                top: newTop,
-                left: newLeft
-            });
+            setSize(size => ({
+                width: newWidth ?? size?.width,
+                height: newHeight ?? size?.height
+            }));
+            setOffset(offset => ({
+                top: newTop ?? offset.top,
+                left: newLeft ?? offset.left
+            }));
         });
     }
 
@@ -125,10 +130,10 @@ export default function useMouseTransform(
         startTrackingMouseResizeTop: direction('n'),
         startTrackingMouseResizeTopRight: direction('ne'),
         startTrackingMouseResizeRight: direction('e'),
-        startTrackingMouseResizeBottomRight: direction('sw'),
+        startTrackingMouseResizeBottomRight: direction('se'),
         startTrackingMouseResizeBottom: direction('s'),
-        startTrackingMouseResizeBottomLeft: direction('se'),
-        startTrackingMouseResizeLeft: direction('e'),
-        startTrackingMouseResizeTopLeft: direction('ne')
+        startTrackingMouseResizeBottomLeft: direction('sw'),
+        startTrackingMouseResizeLeft: direction('w'),
+        startTrackingMouseResizeTopLeft: direction('nw')
     };
 }

@@ -1,0 +1,14 @@
+A (probably) comprehensive list of changes that differ from the original Windows 10
+
+Minor:
+- Taskbar
+    - There's 3 panels per app non-label mode on apps, windows has 2.
+    - Previews has the option to hover slightly above the taskbar instead
+    - Closing previews in list-form animates
+- Desktop
+    - Middle mouse button on titlebar closes the window
+- Apps
+    - The back option in settings does not work the same way, this is because windows has them zoom through 'tiers' whereas mines has everything on the sidebar or the main page.
+
+Major:
+- Bring back the All Programs from Windows 7, change a bit of how Start works

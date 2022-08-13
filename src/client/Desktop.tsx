@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { useSelector } from '../redux';
-import { selectAllInstances } from '../redux/instances';
+import { useDispatch, useSelector } from '../redux';
+import { deleteInstance, selectAllInstances } from '../redux/instances';
 import { Instance as ReduxInstance } from '../redux/instances';
 
-import { useContext, useState, useRef, ReactEventHandler, MouseEventHandler } from 'react';
+import { useContext, useState, useRef, ReactEventHandler, MouseEventHandler, RefObject, memo } from 'react';
 import { AppsContext } from '../components/AppsContext';
 import useMouseTransform from '../hooks/useMouseTransform';
 
@@ -31,16 +31,16 @@ type WindowDimensions = {
 };
 
 // Defaults
-const Dimensions = {
-    width: 400,
-    height: 400,
-    minWidth: 200,
-    minHeight: 200
+const defaultDimensions = {
+    width: 200,
+    height: 120,
+    minWidth: 100,
+    minHeight: 60
 };
 
 let lastIndex = -1;
 
-const getWindowDimensions = (multiplier: number, { width, height, minWidth, minHeight }: WindowDimensions = Dimensions) => {
+const getWindowDimensions = (multiplier: number, { width, height, minWidth, minHeight }: WindowDimensions = defaultDimensions) => {
     const { innerWidth, innerHeight } = window;
     const w = width < minWidth ? minWidth : width;
     const h = height < minHeight ? minHeight : height;
@@ -54,8 +54,8 @@ const getWindowDimensions = (multiplier: number, { width, height, minWidth, minH
     lastIndex++;
 
     return {
-        width,
-        height,
+        width: w,
+        height: h,
         minWidth,
         minHeight,
         paddingX: lastIndex * 24 + 12,
@@ -63,16 +63,49 @@ const getWindowDimensions = (multiplier: number, { width, height, minWidth, minH
     }
 }
 
+type HandleProps = {
+    dir: string;
+    callback: Function;
+    win: RefObject<HTMLDivElement>
+};
+
+const Handle = memo(({ dir, callback, win }: HandleProps) => {
+    const onMouseDown = (e) => {
+        const window = win.current;
+        if (!window) return;
+
+        window.style.transition = 'none';
+        callback(e);
+    };
+    const onMouseUp = () => {
+        const window = win.current;
+        if (!window) return;
+
+        window.style.transition = '';
+    };
+
+    return (
+        <div
+            className={classNames('handle', dir)}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
+        />
+    );
+});
+
 type WindowProps = {
     instance: ReduxInstance
 };
 
-
 function Window({ instance }: WindowProps) {
     const apps = useContext(AppsContext);
     const app = apps[instance.appId];
+
+    const dispatch = useDispatch();
+
     const [ dimensions ] = useState(getWindowDimensions(instance.id, instance.window));
     const { width, height, minWidth, minHeight, paddingX, paddingY } = dimensions;
+
     const win = useRef<HTMLDivElement>(null);
     const {
         size,
@@ -87,41 +120,12 @@ function Window({ instance }: WindowProps) {
         startTrackingMouseResizeLeft,
         startTrackingMouseResizeTopLeft,
     } = useMouseTransform(win, {
-        height,
-        width
+        height: minHeight,
+        width: minWidth
     }, {
         top: paddingX,
         left: paddingY
     });
-
-    type HandleProps = {
-        dir: string;
-        callback: Function;
-    };
-
-    const Handle = ({ dir, callback }: HandleProps) => {
-        const onMouseDown = (e) => {
-            const window = win.current;
-            if (!window) return;
-
-            window.style.transition = 'none';
-            callback(e);
-        };
-        const onMouseUp = () => {
-            const window = win.current;
-            if (!window) return;
-
-            window.style.transition = '';
-        }
-
-        return (
-            <div
-                className={classNames('handle', dir)}
-                onMouseDown={onMouseDown}
-                onMouseUp={onMouseUp}
-            />
-        );
-    }
 
     const onMouseDown = (e) => {
         const window = win.current;
@@ -137,32 +141,40 @@ function Window({ instance }: WindowProps) {
         window.style.transition = '';
     }
 
+    const onClickClose = () => {
+        dispatch(deleteInstance(instance.id));
+    };
+
     return (
         <div
-        class={'window'}
-        style={{
-            transform: `translate(${offset.left}px, ${offset.top}px)`,
-            minWidth: `${minWidth}px`,
-            minHeight: `${minHeight}px`,
-            ...size
-        }}
-        ref={win}
+            class={'window'}
+            style={{
+                transform: `translate(${offset.left}px, ${offset.top}px)`,
+                minWidth: minWidth,
+                minHeight: minHeight,
+                width: size?.width ?? width,
+                height: size?.height ?? height
+            }}
+            ref={win}
         >
             <div class="titlebar" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
                 <div class="title">{instance.appId}</div>
+                <div class="window-buttons">
+                    <div class="close window-button" onClick={onClickClose}><div class="icon"/></div>
+                </div>
             </div>
             <div class="app">
                 {app?.render(instance)}
             </div>
             <div class="resize-handles">
-                <Handle dir="n" callback={startTrackingMouseResizeTop} />
-                <Handle dir="ne" callback={startTrackingMouseResizeTopRight} />
-                <Handle dir="e" callback={startTrackingMouseResizeRight} />
-                <Handle dir="se" callback={startTrackingMouseResizeBottomRight} />
-                <Handle dir="s" callback={startTrackingMouseResizeBottom} />
-                <Handle dir="sw" callback={startTrackingMouseResizeBottomLeft} />
-                <Handle dir="w" callback={startTrackingMouseResizeLeft} />
-                <Handle dir="nw" callback={startTrackingMouseResizeTopLeft} />
+                <Handle win={win} dir="n" callback={startTrackingMouseResizeTop} />
+                <Handle win={win} dir="ne" callback={startTrackingMouseResizeTopRight} />
+                <Handle win={win} dir="e" callback={startTrackingMouseResizeRight} />
+                <Handle win={win} dir="se" callback={startTrackingMouseResizeBottomRight} />
+                <Handle win={win} dir="s" callback={startTrackingMouseResizeBottom} />
+                <Handle win={win} dir="sw" callback={startTrackingMouseResizeBottomLeft} />
+                <Handle win={win} dir="w" callback={startTrackingMouseResizeLeft} />
+                <Handle win={win} dir="nw" callback={startTrackingMouseResizeTopLeft} />
             </div>
         </div>
     )

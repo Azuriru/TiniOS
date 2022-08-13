@@ -1,0 +1,228 @@
+Minified taskbar icon = 32px, around there
+For comparison:
+Big: https://cdn.discordapp.net/attachments/365561999532228608/822833974828072960/unknown.png
+Smol: https://cdn.discordapp.com/attachments/365561999532228608/822834003195199508/unknown.png
+
+Lock the taskbar: No dragging it to the other parts of the screen (wtf how am I gonna implement this)
+
+---- March 21 ----
+
+god figures the highest available quality of this screenshot is from the official microsoft docs. bless microsoft.
+
+https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/images/personalization-colors.png
+
+Something that may probably come in handy:
+
+ui.input({
+    type: 'range',
+    id: 'bd-hue-slider',
+    min: 0,
+    max: 360,
+    value: pickerState.hue,
+    events: {
+        input: e => {
+            pickerState.hue = Number(e.target.value);
+        }
+    }
+});
+
+---- March 22 ----
+
+Fullscreen start menu: https://46c4ts1tskv22sdav81j9c69-wpengine.netdna-ssl.com/wp-content/uploads/prod/sites/2/2017/09/46239710b6b67b2febfa50da212d1220.gif
+Resizable start menu: https://46c4ts1tskv22sdav81j9c69-wpengine.netdna-ssl.com/wp-content/uploads/prod/sites/2/2017/09/ba10821035bb23016d9f98f81bebc38c.gif
+https://www.thewindowsclub.com/windows-10-system-settings
+https://www.thewindowsclub.com/apps-features-settings-in-windows-10
+https://www.thewindowsclub.com/time-language-settings-windows-10
+
+---- March 24 ----
+
+Calendar: https://www.windowscentral.com/sites/wpcentral.com/files/styles/xlarge/public/field/image/2016/12/change-windows-10-time-date-formats.jpg?itok=0YbBjh4I
+
+---- March 26 ----
+
+Normal settings categories: https://cdn.discordapp.com/attachments/238354899291734017/822875932079554590/unknown.png
+About Device: https://cdn.discordapp.com/attachments/238354899291734017/822878941735288832/unknown.png
+
+---- April 29 ----
+
+App Previews: https://thumbs.gfycat.com/UnrealisticBeautifulAgama-mobile.mp4
+App Previews with more than one: https://thumbs.gfycat.com/ImmaculateCompleteAardwolf-mobile.mp4
+
+--
+
+Opera icon effects: https://i.vgy.me/ZjhznO.gif
+
+---- June 3 ----
+
+On OS resize, OS.previewLimit = Math.round(window.innerWidth / 116);
+
+if (sessions > previewLimit) === Minimized;
+
+---- June 17 ----
+
+You may think you'll remember something because it's hard to miss or that you'll double check it at least once more before you consider it done but it's always better to write it down
+
+---- August 2 ----
+
+Apps - Line 285
+
+const left = this.toolbarIcon.offsetLeft + 58 + 29; // Should be the same as getBoundingClientRect();
+
+Because I thought getBoundingClientRect would be more costly than doing offsetLeft with an extra addition
+
+The 58 comes from Start, who is not a part of taskbar
+
+The 29 is half of 58, half of an app's toolbar icon so it's center of it
+
+Taskbar - Line 295
+
+58 + 29 = 58 = startIcon + center of this app aka half the width of it
+96 = minimized preview's fixed width / 2
+58 + 29 - 96 = -9
+
+---- October 26 ----
+
+Startup log.
+
+On startup, print everything to a text file, not just for .. purposes but mac has it too and it helps me know if something for some reason decided not to run, can debug easier.
+
+STARTUP_LOG_01012021_000159.txt
+STARTUP_LOG_DDMMYYYY_HHMMSS.txt
+
+---- June 23 ----
+
+Start menu clicking that hamburger thingy: HeartyHospitableIberianlynx.mp4
+Start menu and hovering: EnviousElderlyAracari.mp4
+Settings drop down: FancyPlasticDungbeetle.mp4
+Toolbar context menu and mouse behavior : ZestyHelplessHyrax.mp4
+Previews smooth transition between apps: LegalQueasyDore.mp4
+Previews X doesn't disappear unless leave the icon when it's the last one left: UnrealisticBeautifulAgama.mp4
+Previews X doesn't disappear unless leave the icon when it's the last one left but it doesnt affect more than if there's more than 1: ImmaculateCompleteAardwolf.mp4
+Previews closing and some weird hover shinanigans: BiodegradableRadiantAmericanbadger.mp4
+Previews closing: BlaringForcefulHeron.mp4
+Previews clicking a lot: AlienatedBlushingBoaconstrictor.mp4
+Previews when minimized goes up and down on click: MiserableAgitatedAmericanalligator.mp4
+Previews when minimized goes up and down faster on hover and click: ThoseFancyAustrianpinscher.mp4
+How previews are supposed to smoothly transition between hovers: CraftyInsignificantIberianlynx.mp4
+
+---- July 21 ----
+
+Add versioning of apps so if there's 2 apps of the same kind, overwrite the previous with the new one if newver > oldver
+
+--
+
+Preview Limit
+The max width/height the previews would be when shrunken, then divide accordingly
+Ex when it's minimized cause you have too many to preview normally, 36 is the height of a single preview at all times
+-48 because that's the size of the taskbar and it would be weird looking otherwise
+
+---------------------------------------------------------------------------------------------------
+
+- Apps
+    - Terminal (Basically console)
+    - Discord (Litcord)
+    - Dfyd
+    - Notes
+    - MSPaint
+    - Te amo
+    - Para Él
+    - Settings
+
+TiniOS.
+
+Animates like, a shrinking circle then splashes, buntini shows up but, not colored.
+
+Window explanation:
+| Maximized is full screen without the toolbar
+| Windowed means it can have any size
+| And you can move it around
+| Minimized means it's not displayed
+
+Maximize/Windowed view: https://i.vgy.me/5y8wEm.gif
+Regular window view: https://cdn.discordapp.com/attachments/238354899291734017/813079380443922452/unknown.png
+Start button menu: https://i.vgy.me/ElAATG.gif
+Start button shutdown: https://i.vgy.me/00sHOa.gif
+Start button + start typing search: https://i.vgy.me/qi2SDS.gif
+Sessions: https://cdn.discordapp.com/attachments/238354899291734017/814442410468966420/unknown.png
+Sessions giving up when there's too many: https://cdn.discordapp.com/attachments/238354899291734017/814442581747433512/unknown.png
+
+Max 3 panel system with pure css:
+- first of type | third last of type
+- second of type | second last of type
+- third of type | last of type
+
+- first of type | second last of type
+- second of type | last of type
+
+- only of type | last of type
+
+Formula to decided preview size:
+Preview dimensions: 180 x 100 = 1.8
+Window dimensions: w x h
+a = w / h
+b = a > 1.8 ? 180 / w : 100 / h
+preview scale(b)
+
+Legend:
+[x] = Done
+[*] = Scrapped
+[?] = Status undecided / Will probably be scrapped
+[~] = Pending
+[&] = Comment
+
+Todo:
+[ ] Make a working import directory plugin for babel
+[ ] Make package.json for all apps, and then pass it to addApps
+    [ ] Update that method to turn AppPackages into Apps
+[ ] Desktop
+    [ ] Draggable windows
+    [ ] Resizable windows
+    [ ] Aux click, on titlebar close it. e.button === 1 this.close();
+[ ] Taskbar
+    [ ] Peek
+    [ ] Previews
+    [ ] Apps
+        [ ] Panel events to unminimize
+        [ ] Custom context menu options
+        [ ] Pin apps to Start Menu & Taskbar
+        [ ] Minimized window doesn't have active style
+        [ ] Minimize animation
+    [ ] Start
+        [ ] Recent apps, and those pinned to the start menu, order is pinned first, then recent, and all programs below
+        [ ] Search
+            [&] Filters Apps, and other misc programs, files maybe?
+            [&] Turns to a white textarea on focus, like discord
+        [ ] Context Menu
+            [ ] Items: [ Open, Open file location, Pin to Taskbar, Pin to Start Menu | Rename | Properties ]
+            [ ] Should persist even if you hover mouse pointer off it
+        [ ] Clicking on settings in the menu doesn't close menu
+            Clicking on settings in menu minimizes the settings window if it is already open; unintended, should make settings the active window
+            And also close start
+[ ] Apps
+    [ ] i18n because I like torturing myself with tasks I can't easily accomplish
+    [ ] Latest sessions. On any session click, bring to front the latest session you were on when clicking the app
+    [ ] Closing any session will make it focus on the last un-minimized session and app
+    [ ] Persistent state, what part of the app, the state of the app when it was closed, or if the pc 'force shut down', etc
+    [ ] Settings
+        [ ] Global theme (light/dark)
+            [&] Maybe :root variables for light and dark and just use those.. idfk
+        [ ] Reset SETTINGS command, not PC, preferably in Settings > About
+        [ ] Then a reset PC command, restore all defaults
+        [ ] Date and time
+            [ ] Formatting option
+        [ ] Brightness
+        [ ] Sound
+            [&] Ex music player sound will be 100 * maxGlobalVolume
+        [ ] Theme (ofc)
+        [ ] Preview settings
+            [ ] Scroll interval (ms)
+            [ ] Scroll animation
+            [ ] Hover slightly above taskbar
+[ ] Add icon option to Inputs/Range
+
+Styles:
+[ ] Correctly style previews
+
+Production:
+[ ] Cursor: pointer at everything appropriate
+[ ] Context menu is supposed to close each time you click on an item

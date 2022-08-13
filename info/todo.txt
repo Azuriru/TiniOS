@@ -1,3 +1,0 @@
-[ ] Make a working import directory plugin for babel
-[ ] Make package.json for all apps, and then pass it to addApps
-    [ ] Update that method to turn AppPackages into Apps
