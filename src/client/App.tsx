@@ -1,5 +1,5 @@
-import { OS } from '../client/OS';
-import Counter from './Counter';
+import { OS } from './OS';
+import Counter from '../components/Counter';
 
 import '../client/OS.css';
 
