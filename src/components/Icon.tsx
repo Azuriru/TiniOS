@@ -15,7 +15,7 @@ export default function Icon({ children, type, className, ...props }: IconProps)
     );
 }
 
-export function appIcon(icon) {
+export function appIcon(icon: string) {
     return (
         <img src={`./assets/app-icons/${icon}.png`}/>
     );

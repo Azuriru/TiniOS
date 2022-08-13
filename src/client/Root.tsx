@@ -1,9 +1,9 @@
 import { Provider } from 'react-redux';
 import { store } from '../redux';
 
-import GlobalErrorBoundary from './GlobalErrorBoundary';
+import GlobalErrorBoundary from '../components/GlobalErrorBoundary';
 import App from './App';
-import AppsContextComponent from './AppsContext';
+import AppsContextComponent from '../components/AppsContext';
 
 export default function Root() {
     return (

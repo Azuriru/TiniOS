@@ -135,8 +135,8 @@ export default function useMouseTransform(
             }
             if (newTop !== undefined || newLeft !== undefined) {
                 setOffset(offset => ({
-                    top: newTop ?? offset?.top,
-                    left: newLeft ?? offset?.left
+                    top: newTop ?? offset?.top ?? 0,
+                    left: newLeft ?? offset?.left ?? 0
                 }));
             }
         });

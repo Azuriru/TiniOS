@@ -1,8 +1,9 @@
+import { GlobalApp } from '../../components/AppsContext';
 import { Instance } from '../../redux/instances';
 import { default as manifest } from './index.json';
 
 class Opera {
-    constructor(public app) {
+    constructor(public app: GlobalApp) {
     }
 
     render(instance: Instance) {

@@ -2,14 +2,20 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllAppIds } from "../redux/apps";
 
-import * as defaultApps from '../apps';
+import * as _defaultApps from '../apps';
 import { Instance } from "../redux/instances";
 
-type AppInstance = {
-    render: (instance: Instance) => null;
-};
+class DefaultAppClass {
+    constructor(public app: GlobalApp) {}
 
-const appInstancesSingleton: Record<string, AppInstance> = {};
+    render(instance: Instance): ReactNode {
+        return null;
+    }
+}
+
+const defaultApps: Record<string, { class: typeof DefaultAppClass }> = _defaultApps;
+
+const appInstancesSingleton: Record<string, DefaultAppClass> = {};
 
 export const AppsContext = createContext(appInstancesSingleton);
 
@@ -17,7 +23,7 @@ type AppsContextComponentProps = {
     children: ReactNode;
 };
 
-class GlobalApp {}
+export class GlobalApp {}
 
 const globalApp = new GlobalApp();
 

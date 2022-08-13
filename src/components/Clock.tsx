@@ -1,4 +1,3 @@
-// import '../../css/Clock.css';
 import { padStart, startsWith } from '../util/string';
 import { ReactNode, useEffect, useState } from 'react';
 
@@ -24,7 +23,7 @@ const getCurrentDate = (date: Date): CurrentDate => {
 
 const sampleTime = '{hh}:{mm}';
 const formatTimeString = (date: Date, timeString: string = sampleTime) => {
-    return timeString.replace(/{(.+?)}/g, (original, type) => {
+    return timeString.replace(/{(.+?)}/g, (original: string, type: string) => {
         const fixedLength = startsWith(type, '-');
         if (fixedLength) {
             type = type.slice(1);
@@ -32,7 +31,7 @@ const formatTimeString = (date: Date, timeString: string = sampleTime) => {
 
         const length = type.length;
 
-        if (!type.split('').every(e => e === type[0])) return original;
+        if (!type.split('').every((e: string) => e === type[0])) return original;
 
         const format = (str: string) => fixedLength ? str.slice(-length) : str;
         switch (type[0]) {
@@ -50,7 +49,7 @@ const formatTimeString = (date: Date, timeString: string = sampleTime) => {
 
 const sampleDate = '{dd}/{mm}/{yyyy}';
 const formatDateString = (date: Date, dateString: string = sampleDate) => {
-    return dateString.replace(/{(.+?)}/g, (original, type) => {
+    return dateString.replace(/{(.+?)}/g, (original: string, type: string) => {
         const fixedLength = startsWith(type, '-');
         if (fixedLength) {
             type = type.slice(1);
@@ -58,7 +57,7 @@ const formatDateString = (date: Date, dateString: string = sampleDate) => {
 
         const length = type.length;
 
-        if (!type.split('').every(e => e === type[0])) return original;
+        if (!type.split('').every((e: string) => e === type[0])) return original;
 
         const format = (str: string) => fixedLength ? str.slice(-length) : str;
         switch (type[0]) {
