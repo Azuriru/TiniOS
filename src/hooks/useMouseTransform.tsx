@@ -1,29 +1,39 @@
 import { useState, useCallback, useRef, RefObject } from 'react';
 import useMouseTracker from './useMouseTracker';
 import { startsWith } from '../util/string';
+import assert from 'assertmin';
 
-type SizeState = { width: number; height: number; } | null;
-
-type MinSizes = {
+type Size = {
     width: number;
     height: number
 };
 
-type MinOffset = {
+type InitialOffset = {
     top: number;
     left: number
 };
 
+enum Direction {
+    Up = 1,
+    Down = 2,
+    Right = 4,
+    Left = 8
+};
+
+type MouseTransformOptions = {
+    minSize?: Size,
+    initialSize?: Size,
+    initialOffset?: InitialOffset,
+};
+
 export default function useMouseTransform(
     elementRef: RefObject<HTMLElement>,
-    minSizes?: MinSizes,
-    minOffset: MinOffset = {
-        top: 0,
-        left: 0
-    }
+    options: MouseTransformOptions
 ) {
-    const [size, setSize] = useState<SizeState>(null);
-    const [offset, setOffset] = useState(minOffset);
+    const { minSize, initialSize, initialOffset } = options;
+
+    const [size, setSize] = useState(initialSize);
+    const [offset, setOffset] = useState(initialOffset);
 
     // These are instance variables
     // They're used to keep track of the initial positions of `draggable`
@@ -50,8 +60,8 @@ export default function useMouseTransform(
         startSize.current.width = bounds.width;
         startSize.current.height = bounds.height;
 
-        startOffset.current.top = offset.top;
-        startOffset.current.left = offset.left;
+        startOffset.current.top = offset?.top ?? 0;
+        startOffset.current.left = offset?.left ?? 0;
     }, [offset, elementRef]);
 
     const startTrackingMouseDrag = useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
@@ -61,63 +71,74 @@ export default function useMouseTransform(
         });
     });
 
-    const startTrackingMouseResizeAll = (direction: string) => {
+    const startTrackingMouseResizeAll = (direction: Direction) => {
         return useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
             const { width, height } = startSize.current;
             const { top, left } = startOffset.current;
-            const dir = (d: string) => startsWith(d, '!')
-                ? direction === d.slice(1)
-                : direction.includes(d);
 
-            let newHeight, newWidth, newTop, newLeft;
-            // let [ newHeight, newWidth ] = [ width, height ];
-            // let [ newTop, newLeft ] = [ top, left ];
-
-            if (dir('n')) {
+            let newHeight: number | undefined;
+            let newWidth: number | undefined;
+            let newTop: number | undefined;
+            let newLeft: number | undefined;
+0
+            // Set and update the dimensions variables as needed
+            // Up and left are special, as they must handle position
+            // and size at the same time
+            if (direction & Direction.Up) {
                 newHeight = height + deltaY;
                 newTop = top - deltaY;
             }
 
-            if (dir('s')) {
+            if (direction & Direction.Down) {
                 newHeight = height - deltaY;
             }
 
-            if (dir('w')) {
+            if (direction & Direction.Left) {
                 newLeft = left - deltaX;
                 newWidth = width + deltaX;
             }
 
-            if (dir('e')) {
+            if (direction & Direction.Right) {
                 newWidth = width - deltaX;
             }
 
-            if (minSizes !== undefined && (dir('n') || dir('w'))) {
-                if (dir('n')) {
-                    const clampedHeight = Math.max(minSizes.height, newHeight);
+            // If the caller has provided minimum sizes, we must clamp them in our js
+            // We only have to do this in the "up" and "left" directions, because
+            // those are the directions that impact the translation transform
+            // Therefore we can't just rely on min-height and min-width to deal with it
+            if (minSize !== undefined && (direction & Direction.Up || direction & Direction.Left)) {
+                if (direction & Direction.Up) {
+                    assert.unchecked(newHeight !== undefined);
+                    assert.unchecked(newTop !== undefined);
+
+                    const clampedHeight = Math.max(minSize.height, newHeight);
                     newTop -= clampedHeight - newHeight;
                     newHeight = clampedHeight;
                 }
 
-                // if (dir('!sw')) {
-                //     const clampedHeight = Math.max(minSizes.height, newHeight);
-                //     newHeight = clampedHeight;
-                // }
+                if (direction & Direction.Left) {
+                    assert.unchecked(newWidth !== undefined);
+                    assert.unchecked(newLeft !== undefined);
 
-                if (dir('w')) {
-                    const clampedWidth = Math.max(minSizes.width, newWidth);
+                    const clampedWidth = Math.max(minSize.width, newWidth);
                     newLeft -= clampedWidth - newWidth;
                     newWidth = clampedWidth;
                 }
             }
 
-            setSize(size => ({
-                width: newWidth ?? size?.width,
-                height: newHeight ?? size?.height
-            }));
-            setOffset(offset => ({
-                top: newTop ?? offset.top,
-                left: newLeft ?? offset.left
-            }));
+            // Only set the state when a relevant field has been updated
+            if (newWidth !== undefined || newHeight !== undefined) {
+                setSize(size => ({
+                    width: newWidth ?? size?.width ?? 0,
+                    height: newHeight ?? size?.height ?? 0
+                }));
+            }
+            if (newTop !== undefined || newLeft !== undefined) {
+                setOffset(offset => ({
+                    top: newTop ?? offset?.top,
+                    left: newLeft ?? offset?.left
+                }));
+            }
         });
     }
 
@@ -127,13 +148,22 @@ export default function useMouseTransform(
         size,
         offset,
         startTrackingMouseDrag,
-        startTrackingMouseResizeTop: direction('n'),
-        startTrackingMouseResizeTopRight: direction('ne'),
-        startTrackingMouseResizeRight: direction('e'),
-        startTrackingMouseResizeBottomRight: direction('se'),
-        startTrackingMouseResizeBottom: direction('s'),
-        startTrackingMouseResizeBottomLeft: direction('sw'),
-        startTrackingMouseResizeLeft: direction('w'),
-        startTrackingMouseResizeTopLeft: direction('nw')
+        startTrackingMouseResizeTop: direction(Direction.Up),
+        startTrackingMouseResizeTopRight: direction(Direction.Up | Direction.Right),
+        startTrackingMouseResizeRight: direction(Direction.Right),
+        startTrackingMouseResizeBottomRight: direction(Direction.Down | Direction.Right),
+        startTrackingMouseResizeBottom: direction(Direction.Down),
+        startTrackingMouseResizeBottomLeft: direction(Direction.Down | Direction.Left),
+        startTrackingMouseResizeLeft: direction(Direction.Left),
+        startTrackingMouseResizeTopLeft: direction(Direction.Up | Direction.Left),
+        get styles() {
+            return {
+                transform: `translate(${offset?.left ?? 0}px, ${offset?.top ?? 0}px)`,
+                minWidth: minSize?.width,
+                minHeight: minSize?.height,
+                width: size?.width ?? initialSize?.width,
+                height: size?.height ?? initialSize?.height
+            };
+        }
     };
 }

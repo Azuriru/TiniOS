@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from '../redux';
 import { deleteInstance, selectAllInstances } from '../redux/instances';
 import { Instance as ReduxInstance } from '../redux/instances';
 
-import { useContext, useState, useRef, ReactEventHandler, MouseEventHandler, RefObject, memo } from 'react';
+import { useContext, useState, useRef, ReactEventHandler, MouseEventHandler, RefObject, memo, MouseEvent } from 'react';
 import { AppsContext } from '../components/AppsContext';
 import useMouseTransform from '../hooks/useMouseTransform';
 
@@ -70,7 +70,7 @@ type HandleProps = {
 };
 
 const Handle = memo(({ dir, callback, win }: HandleProps) => {
-    const onMouseDown = (e) => {
+    const onMouseDown = (e: MouseEvent) => {
         const window = win.current;
         if (!window) return;
 
@@ -86,7 +86,7 @@ const Handle = memo(({ dir, callback, win }: HandleProps) => {
 
     return (
         <div
-            className={classNames('handle', dir)}
+            className={`handle ${dir}`}
             onMouseDown={onMouseDown}
             onMouseUp={onMouseUp}
         />
@@ -108,8 +108,7 @@ function Window({ instance }: WindowProps) {
 
     const win = useRef<HTMLDivElement>(null);
     const {
-        size,
-        offset,
+        styles,
         startTrackingMouseDrag,
         startTrackingMouseResizeTop,
         startTrackingMouseResizeTopRight,
@@ -120,14 +119,21 @@ function Window({ instance }: WindowProps) {
         startTrackingMouseResizeLeft,
         startTrackingMouseResizeTopLeft,
     } = useMouseTransform(win, {
-        height: minHeight,
-        width: minWidth
-    }, {
-        top: paddingX,
-        left: paddingY
+        minSize: {
+            height: minHeight,
+            width: minWidth
+        },
+        initialOffset: {
+            top: paddingX,
+            left: paddingY
+        },
+        initialSize: {
+            height,
+            width
+        }
     });
 
-    const onMouseDown = (e) => {
+    const onMouseDown = (e: MouseEvent) => {
         const window = win.current;
         if (!window) return;
 
@@ -148,13 +154,7 @@ function Window({ instance }: WindowProps) {
     return (
         <div
             class={'window'}
-            style={{
-                transform: `translate(${offset.left}px, ${offset.top}px)`,
-                minWidth: minWidth,
-                minHeight: minHeight,
-                width: size?.width ?? width,
-                height: size?.height ?? height
-            }}
+            style={styles}
             ref={win}
         >
             <div class="titlebar" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>

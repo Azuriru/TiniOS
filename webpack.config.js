@@ -1,9 +1,9 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-const createReloadPlugin = require('electron-reload-webpack-plugin');
-const ElectronReloadPlugin = createReloadPlugin({
-    path: __dirname,
-});
+// const createReloadPlugin = require('electron-reload-webpack-plugin');
+// const ElectronReloadPlugin = createReloadPlugin({
+//     path: __dirname,
+// });
 
 module.exports = {
     target: 'web',
@@ -21,7 +21,7 @@ module.exports = {
                 }
             ]
         }),
-        ElectronReloadPlugin()
+        // ElectronReloadPlugin()
     ],
     module: {
         rules: [

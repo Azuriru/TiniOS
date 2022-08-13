@@ -25,6 +25,7 @@
         "@types/react": "^17.0.2",
         "@types/react-dom": "^17.0.1",
         "@types/react-redux": "^7.1.16",
+        "assertmin": "^0.3.5",
         "autoprefixer": "^9.8.6",
         "babel-loader": "^8.1.0",
         "babel-plugin-bynport-directory": "^1.0.0",

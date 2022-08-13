@@ -1337,6 +1337,11 @@ asar@^3.0.0:
   optionalDependencies:
     "@types/glob" "^7.1.1"
 
+assertmin@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/assertmin/-/assertmin-0.3.5.tgz#ea88daab08247c2e8541e741a3d730da8c92de7f"
+  integrity sha512-dtbudO8mnoJcPEfI/E0hWY3WsdzLkWMGP1SgTGOSdytxXIbEqmQpMVyT9ZBcYd75LxLNl2MccxSAy2mNiXw6fA==
+
 async-limiter@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.1.tgz#dd379e94f0db8310b08291f9d64c3209766617fd"

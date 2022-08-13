@@ -3,7 +3,7 @@ import { useCallback, useRef } from 'react';
 type OnMouseMoveDeltas = {
     deltaX: number;
     deltaY: number;
-}
+};
 
 export default function useMouseTracker(
     onMouseDown: (e: Event) => void,
