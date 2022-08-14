@@ -27,7 +27,7 @@ const formatTimeString = (date: Date, timeString: string = sampleTime) => {
         const fixedLength = startsWith(type, '-');
         if (fixedLength) {
             type = type.slice(1);
-        };
+        }
 
         const length = type.length;
 
@@ -45,7 +45,7 @@ const formatTimeString = (date: Date, timeString: string = sampleTime) => {
                 return `Unknown type: ${type}`;
         }
     });
-}
+};
 
 const sampleDate = '{dd}/{mm}/{yyyy}';
 const formatDateString = (date: Date, dateString: string = sampleDate) => {
@@ -53,7 +53,7 @@ const formatDateString = (date: Date, dateString: string = sampleDate) => {
         const fixedLength = startsWith(type, '-');
         if (fixedLength) {
             type = type.slice(1);
-        };
+        }
 
         const length = type.length;
 
@@ -73,7 +73,7 @@ const formatDateString = (date: Date, dateString: string = sampleDate) => {
                 return `Unknown type: ${type}`;
         }
     });
-}
+};
 
 type CurrentTime = {
     hours: number;

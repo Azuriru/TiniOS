@@ -5,7 +5,7 @@ type IconProps = {
     type?: string;
     className?: string;
     props?: object;
-}
+};
 
 export default function Icon({ children, type, className, ...props }: IconProps) {
     return (

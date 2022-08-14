@@ -49,6 +49,10 @@
 
         // No ASI
         "@typescript-eslint/semi": ["error", "always"],
-        "semi": "off"
+        "semi": "off",
+
+        "react/no-unknown-property": ["error", {
+            "ignore": ["class"]
+        }]
     }
 }

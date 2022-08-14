@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import Icon from '../components/Icon';
 import Clock from '../components/Clock';
-import { removeByIndex, updateByIndex } from '../util/array';
+import { removeByIndex, updateByIndex, appender } from '../util/array';
 import { Start } from './Start';
 
 import classNames from 'classnames';
@@ -27,7 +28,9 @@ export function Taskbar() {
     const [previewingApps, setPreviewingApps] = useState<AppPreview[]>([]);
 
     const onPreview = (appName: string) => {
-        setPreviewingApps(apps => [...apps, { name: appName, hiding: false }]);
+        setPreviewingApps(appender({ name: appName, hiding: false }));
+
+        // setPreviewingApps(apps => [...apps, { name: appName, hiding: false }]);
     };
     const onHide = (appName: string) => {
         setPreviewingApps(apps => {
@@ -83,10 +86,12 @@ export function App({ name }: AppProps) {
 
     const onMouseEnter = () => {
         setHovered(true);
-    }
+    };
+
     const onMouseLeave = () => {
         setHovered(false);
     };
+
     const onClick = () => {
         dispatch(
             addInstance({
@@ -111,7 +116,7 @@ export function App({ name }: AppProps) {
             <div className="panels">
             </div>
         </div>
-    )
+    );
 }
 
 function Panel() {

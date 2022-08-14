@@ -73,7 +73,7 @@ export function insertBeforeIndex<T>(array: T[], findIndex: (item: T) => boolean
     const index = array.findIndex(findIndex);
 
     if (index !== -1) {
-        return insertAt(array, index, ...items);;
+        return insertAt(array, index, ...items);
     }
 
     return array;
@@ -87,4 +87,8 @@ export function insertAfterIndex<T>(array: T[], findIndex: (item: T) => boolean,
     }
 
     return array;
+}
+
+export function appender<T>(item: T) {
+    return (arr: T[]) => append(arr, item);
 }

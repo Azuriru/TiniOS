@@ -4,15 +4,15 @@ import { store } from '../redux';
 import GlobalErrorBoundary from '../components/GlobalErrorBoundary';
 import App from './App';
 import AppsContextComponent from '../components/AppsContext';
+import { StrictMode } from 'react';
+import { nested } from '../util/react';
 
 export default function Root() {
-    return (
-        <GlobalErrorBoundary>
-            <Provider store={store}>
-                <AppsContextComponent>
-                    <App />
-                </AppsContextComponent>
-            </Provider>
-        </GlobalErrorBoundary>
-    )
+    return nested(
+        StrictMode,
+        GlobalErrorBoundary,
+        Provider, { store },
+        AppsContextComponent,
+        App
+    );
 }

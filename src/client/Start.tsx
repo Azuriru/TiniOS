@@ -42,7 +42,7 @@ function StartContent({ visible }: StartContentProps) {
             <Sidebar />
             <Main />
         </div>
-    )
+    );
 }
 
 type SidebarIconProps = {
@@ -137,7 +137,7 @@ type StartItemProps = {
 
 export function StartItem({ icon, children, classes, onClick, contextmenu: contextMenuItems, ...props }: StartItemProps) {
     const onContextMenu = () => {
-
+        // TODO
     };
 
     return (
@@ -182,7 +182,7 @@ function Main() {
 
     const onClick = () => {
         setAllProgramsVisible(visible => !visible);
-    }
+    };
 
     return (
         <div class="main">
@@ -212,7 +212,7 @@ function Main() {
                 />
             </div>
         </div>
-    )
+    );
 }
 
 function AllPrograms() {

@@ -3,12 +3,19 @@ import { useCallback, useRef } from 'react';
 type OnMouseMoveDeltas = {
     deltaX: number;
     deltaY: number;
-}
+};
+
+type BeginMouseTrackingFn = (e: MouseEventShape) => void;
+
+type MouseEventShape = {
+    clientX: number;
+    clientY: number;
+};
 
 export default function useMouseTracker(
-    onMouseDown: (e: Event) => void,
+    onMouseDown: (e: MouseEventShape) => void,
     onMove: (deltas: OnMouseMoveDeltas) => void
-) {
+): BeginMouseTrackingFn {
     const startMouseOffset = useRef({
         top: 0,
         left: 0
@@ -21,7 +28,7 @@ export default function useMouseTracker(
     // If this were to change, the callbacks should be updated
     // to use local state for the created functions
     // Or mutable refs could be used to hold the callbacks
-    const onMouseMove = useCallback((e) => {
+    const onMouseMove = useCallback((e: MouseEvent) => {
         const deltaY = startMouseOffset.current.top - e.clientY;
         const deltaX = startMouseOffset.current.left - e.clientX;
 
@@ -37,7 +44,7 @@ export default function useMouseTracker(
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
     }, [onMouseMove]);
-    const startTrackingMouse = useCallback((e) => {
+    const startTrackingMouse = useCallback((e: MouseEventShape) => {
         onMouseDown(e);
 
         startMouseOffset.current.left = e.clientX;

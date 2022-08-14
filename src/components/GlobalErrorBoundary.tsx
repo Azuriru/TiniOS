@@ -2,13 +2,13 @@ import { Component, ReactNode } from 'react';
 
 type GlobalErrorBoundaryProps = {
     children: ReactNode;
-}
+};
 
 type GlobalErrorBoundaryState = {
     errored: boolean;
     error: any;
     errorInfo: any;
-}
+};
 
 export default class GlobalErrorBoundary extends Component<GlobalErrorBoundaryProps, GlobalErrorBoundaryState> {
     constructor(props: GlobalErrorBoundaryProps) {

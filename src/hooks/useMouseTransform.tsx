@@ -1,9 +1,8 @@
-import { useState, useCallback, useRef, RefObject } from 'react';
-import useMouseTracker from './useMouseTracker';
-import { startsWith } from '../util/string';
+import { useState, useCallback, useRef, useMemo, RefObject } from 'react';
+import useMouseTracker from './useMouseTracker.old';
 import assert from 'assertmin';
 
-type Size = {
+export type Size = {
     width: number;
     height: number
 };
@@ -18,7 +17,7 @@ enum Direction {
     Down = 2,
     Right = 4,
     Left = 8
-};
+}
 
 type MouseTransformOptions = {
     minSize?: Size,
@@ -71,8 +70,8 @@ export default function useMouseTransform(
         });
     });
 
-    const startTrackingMouseResizeAll = (direction: Direction) => {
-        return useMouseTracker(storeStartOffsets, ({ deltaX, deltaY }) => {
+    const useMouseResizeTracking = (direction: Direction) => {
+        const onMouseMove = useCallback(({ deltaX, deltaY }) => {
             const { width, height } = startSize.current;
             const { top, left } = startOffset.current;
 
@@ -80,7 +79,7 @@ export default function useMouseTransform(
             let newWidth: number | undefined;
             let newTop: number | undefined;
             let newLeft: number | undefined;
-0
+
             // Set and update the dimensions variables as needed
             // Up and left are special, as they must handle position
             // and size at the same time
@@ -139,31 +138,38 @@ export default function useMouseTransform(
                     left: newLeft ?? offset?.left ?? 0
                 }));
             }
-        });
-    }
+        }, [direction]);
 
-    const direction = startTrackingMouseResizeAll;
+        return useMouseTracker(storeStartOffsets, onMouseMove);
+    };
 
-    return {
-        size,
-        offset,
-        startTrackingMouseDrag,
-        startTrackingMouseResizeTop: direction(Direction.Up),
-        startTrackingMouseResizeTopRight: direction(Direction.Up | Direction.Right),
-        startTrackingMouseResizeRight: direction(Direction.Right),
-        startTrackingMouseResizeBottomRight: direction(Direction.Down | Direction.Right),
-        startTrackingMouseResizeBottom: direction(Direction.Down),
-        startTrackingMouseResizeBottomLeft: direction(Direction.Down | Direction.Left),
-        startTrackingMouseResizeLeft: direction(Direction.Left),
-        startTrackingMouseResizeTopLeft: direction(Direction.Up | Direction.Left),
-        get styles() {
+    const useStyles = (rest: any) => {
+        return useMemo(() => {
             return {
                 transform: `translate(${offset?.left ?? 0}px, ${offset?.top ?? 0}px)`,
                 minWidth: minSize?.width,
                 minHeight: minSize?.height,
                 width: size?.width ?? initialSize?.width,
-                height: size?.height ?? initialSize?.height
+                height: size?.height ?? initialSize?.height,
+                ...rest
             };
-        }
+        // This is wrong.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [rest, size, offset]);
+    };
+
+    return {
+        size,
+        offset,
+        startTrackingMouseDrag,
+        startTrackingMouseResizeTop: useMouseResizeTracking(Direction.Up),
+        startTrackingMouseResizeTopRight: useMouseResizeTracking(Direction.Up | Direction.Right),
+        startTrackingMouseResizeRight: useMouseResizeTracking(Direction.Right),
+        startTrackingMouseResizeBottomRight: useMouseResizeTracking(Direction.Down | Direction.Right),
+        startTrackingMouseResizeBottom: useMouseResizeTracking(Direction.Down),
+        startTrackingMouseResizeBottomLeft: useMouseResizeTracking(Direction.Down | Direction.Left),
+        startTrackingMouseResizeLeft: useMouseResizeTracking(Direction.Left),
+        startTrackingMouseResizeTopLeft: useMouseResizeTracking(Direction.Up | Direction.Left),
+        useStyles
     };
 }

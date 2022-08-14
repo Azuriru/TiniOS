@@ -26,5 +26,5 @@ export default function Counter() {
             <button onClick={onDecrement}>Decrement</button>
             <button onClick={onReset}>Reset</button>
         </div>
-    )
+    );
 }

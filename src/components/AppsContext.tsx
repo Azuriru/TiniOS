@@ -8,6 +8,7 @@ import { Instance } from "../redux/instances";
 class DefaultAppClass {
     constructor(public app: GlobalApp) {}
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render(instance: Instance): ReactNode {
         return null;
     }
@@ -44,11 +45,11 @@ export default function AppsContextComponent({ children }: AppsContextComponentP
 
             return copy;
         });
-    }, [appIds])
+    }, [appIds]);
 
     return (
         <AppsContext.Provider value={appInstances}>
             { children }
         </AppsContext.Provider>
-    )
+    );
 }

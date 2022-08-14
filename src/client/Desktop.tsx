@@ -1,9 +1,9 @@
-import classNames from 'classnames';
 import { useDispatch, useSelector } from '../redux';
-import { deleteInstance, selectAllInstances } from '../redux/instances';
+import { deleteInstance, focusInstance, selectAllInstances, updateInstanceWindow } from '../redux/instances';
 import { Instance as ReduxInstance } from '../redux/instances';
 
-import { useContext, useState, useRef, ReactEventHandler, MouseEventHandler, RefObject, memo, MouseEvent } from 'react';
+import classNames from 'classnames';
+import { useContext, useState, useRef, RefObject, memo, MouseEvent, useMemo, ReactEventHandler, useEffect, SetStateAction, Dispatch } from 'react';
 import { AppsContext } from '../components/AppsContext';
 import useMouseTransform from '../hooks/useMouseTransform';
 
@@ -60,28 +60,22 @@ const getWindowDimensions = (multiplier: number, { width, height, minWidth, minH
         minHeight,
         paddingX: lastIndex * 24 + 12,
         paddingY: lastIndex * 28 + 6
-    }
-}
+    };
+};
 
 type HandleProps = {
     dir: string;
-    callback: Function;
-    win: RefObject<HTMLDivElement>
+    callback: (e: MouseEvent) => void;
+    setEnabledTransitions: Dispatch<SetStateAction<boolean>>;
 };
 
-const Handle = memo(({ dir, callback, win }: HandleProps) => {
+const Handle = memo(function Handle({ dir, callback, setEnabledTransitions }: HandleProps) {
     const onMouseDown = (e: MouseEvent) => {
-        const window = win.current;
-        if (!window) return;
-
-        window.style.transition = 'none';
+        setEnabledTransitions(false);
         callback(e);
     };
     const onMouseUp = () => {
-        const window = win.current;
-        if (!window) return;
-
-        window.style.transition = '';
+        setEnabledTransitions(true);
     };
 
     return (
@@ -90,6 +84,23 @@ const Handle = memo(({ dir, callback, win }: HandleProps) => {
             onMouseDown={onMouseDown}
             onMouseUp={onMouseUp}
         />
+    );
+});
+
+type WindowButtonProps = {
+    type: string;
+    onClick: ReactEventHandler;
+    // onClick: (e: MouseEvent) => void;
+};
+
+const WindowButton = memo(function WindowButton({ type, onClick }: WindowButtonProps) {
+    return (
+        <div
+            class={classNames('window-button', type)}
+            onClick={onClick}
+        >
+            <div class="icon"/>
+        </div>
     );
 });
 
@@ -105,10 +116,15 @@ function Window({ instance }: WindowProps) {
 
     const [ dimensions ] = useState(getWindowDimensions(instance.id, instance.window));
     const { width, height, minWidth, minHeight, paddingX, paddingY } = dimensions;
+    const [ enabledTransitions, setEnabledTransitions ] = useState(true);
+    const [ minimized, setMinimized ] = useState(false);
+    const [ maximized, setMaximized ] = useState(false);
 
     const win = useRef<HTMLDivElement>(null);
     const {
-        styles,
+        size,
+        offset,
+        useStyles,
         startTrackingMouseDrag,
         startTrackingMouseResizeTop,
         startTrackingMouseResizeTopRight,
@@ -132,50 +148,78 @@ function Window({ instance }: WindowProps) {
             width
         }
     });
+    const restStyles = useMemo(() => {
+        return {
+            zIndex: instance.zIndex
+        };
+    }, [instance.zIndex]);
+    const styles = useStyles(restStyles);
 
-    const onMouseDown = (e: MouseEvent) => {
-        const window = win.current;
-        if (!window) return;
+    useEffect(() => {
+        dispatch(updateInstanceWindow({
+            id: instance.id,
+            state: {
+                minHeight,
+                minWidth,
+                height: size?.height ?? height,
+                width: size?.width ?? width
+            }
+        }));
+    }, [dispatch, height, instance.id, minHeight, minWidth, size, width]);
 
-        window.style.transition = 'none';
-        startTrackingMouseDrag(e);
+    const onClickMinimize = () => {
+        setMinimized(minimized => !minimized);
     };
-    const onMouseUp = () => {
-        const window = win.current;
-        if (!window) return;
-
-        window.style.transition = '';
-    }
-
+    const onClickMaximized = () => {
+        setMaximized(maximized => !maximized);
+    };
     const onClickClose = () => {
         dispatch(deleteInstance(instance.id));
     };
 
+    const onFocus = () => {
+        dispatch(focusInstance(instance.id));
+    };
+
+    const onMouseDown = (e: MouseEvent): void => {
+        setEnabledTransitions(false);
+        startTrackingMouseDrag(e);
+    };
+    const onMouseUp = (): void => {
+        setEnabledTransitions(true);
+    };
+
     return (
         <div
-            class={'window'}
-            style={styles}
+            class={classNames('window', minimized && 'minimized', maximized && 'maximized')}
+            style={{
+                transition: enabledTransitions ? '.3s' : 'none',
+                ...styles
+            }}
+            onMouseDown={onFocus}
             ref={win}
         >
             <div class="titlebar" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
                 <div class="title">{instance.appId}</div>
                 <div class="window-buttons">
-                    <div class="close window-button" onClick={onClickClose}><div class="icon"/></div>
+                    <WindowButton type="minimize" onClick={onClickMinimize}/>
+                    <WindowButton type="maximize" onClick={onClickMaximized}/>
+                    <WindowButton type="close" onClick={onClickClose}/>
                 </div>
             </div>
             <div class="app">
                 {app?.render(instance)}
             </div>
             <div class="resize-handles">
-                <Handle win={win} dir="n" callback={startTrackingMouseResizeTop} />
-                <Handle win={win} dir="ne" callback={startTrackingMouseResizeTopRight} />
-                <Handle win={win} dir="e" callback={startTrackingMouseResizeRight} />
-                <Handle win={win} dir="se" callback={startTrackingMouseResizeBottomRight} />
-                <Handle win={win} dir="s" callback={startTrackingMouseResizeBottom} />
-                <Handle win={win} dir="sw" callback={startTrackingMouseResizeBottomLeft} />
-                <Handle win={win} dir="w" callback={startTrackingMouseResizeLeft} />
-                <Handle win={win} dir="nw" callback={startTrackingMouseResizeTopLeft} />
+                <Handle setEnabledTransitions={setEnabledTransitions} dir="n" callback={startTrackingMouseResizeTop} />
+                <Handle setEnabledTransitions={setEnabledTransitions} dir="ne" callback={startTrackingMouseResizeTopRight} />
+                <Handle setEnabledTransitions={setEnabledTransitions} dir="e" callback={startTrackingMouseResizeRight} />
+                <Handle setEnabledTransitions={setEnabledTransitions} dir="se" callback={startTrackingMouseResizeBottomRight} />
+                <Handle setEnabledTransitions={setEnabledTransitions} dir="s" callback={startTrackingMouseResizeBottom} />
+                <Handle setEnabledTransitions={setEnabledTransitions} dir="sw" callback={startTrackingMouseResizeBottomLeft} />
+                <Handle setEnabledTransitions={setEnabledTransitions} dir="w" callback={startTrackingMouseResizeLeft} />
+                <Handle setEnabledTransitions={setEnabledTransitions} dir="nw" callback={startTrackingMouseResizeTopLeft} />
             </div>
         </div>
-    )
+    );
 }
