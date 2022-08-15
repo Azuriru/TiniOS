@@ -21,6 +21,7 @@
     position: absolute;
     /* transition: .3s; */
     background-color: rgb(255, 255, 255, .1);
+    border: 1px solid var(--windows);
 }
 
 .window.minimized {
@@ -47,8 +48,6 @@
     align-items: center;
     justify-content: space-between;
     background-color: var(--windows);
-    border: 1px solid var(--windows);
-    border-bottom: none;
     transition: .3s background-color, .3s border-color;
 }
 
