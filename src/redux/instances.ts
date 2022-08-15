@@ -81,4 +81,17 @@ export const selectLastFocused = createSelector(
     state => state.entities[state.lastZIndex]
 );
 
+export const selectByAppId = (appId: string) => createSelector(
+    (state: RootState) => state.instances,
+    state => Object.values(state.entities).filter(instance => instance?.appId === appId)
+);
+
+export const selectInstancesByAppId = createSelector(
+    [
+        (state: RootState) => state.instances,
+        (state, appId: string) => appId
+    ],
+    (instances, appId) => Object.values(instances.entities).filter(instance => instance?.appId === appId)
+);
+
 export default instances.reducer;
