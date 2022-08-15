@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from '../redux';
-import { deleteInstance, focusInstance, selectAllInstances, updateInstanceWindow } from '../redux/instances';
+import { useDispatch, useSelector, useStore } from '../redux';
+import { deleteInstance, focusInstance, selectAllInstances, selectLastWindowState, updateInstanceWindow, WindowState } from '../redux/instances';
 import { Instance as ReduxInstance } from '../redux/instances';
 
 import classNames from 'classnames';
-import { useContext, useState, useRef, RefObject, memo, MouseEvent, useMemo, ReactEventHandler, useEffect, SetStateAction, Dispatch } from 'react';
+import { useContext, useState, useRef, memo, MouseEvent, useMemo, ReactEventHandler, useEffect, SetStateAction, Dispatch } from 'react';
 import { AppsContext } from '../components/AppsContext';
 import useMouseTransform from '../hooks/useMouseTransform';
 
@@ -38,28 +38,29 @@ const defaultDimensions = {
     minHeight: 60
 };
 
-let lastIndex = -1;
-
-const getWindowDimensions = (multiplier: number, { width, height, minWidth, minHeight }: WindowDimensions = defaultDimensions) => {
+const getWindowDimensions = (lastWindowState?: WindowState, { width, height, minWidth, minHeight }: WindowDimensions = defaultDimensions) => {
     const { innerWidth, innerHeight } = window;
     const w = width < minWidth ? minWidth : width;
     const h = height < minHeight ? minHeight : height;
-    const paddingX = lastIndex * 24 + 12;
-    const paddingY = lastIndex * 28 + 6;
 
-    if (innerWidth - w - paddingX < 0 || innerHeight - 44 - h - paddingY < 0) {
-        lastIndex = -1;
+    let paddingX = (lastWindowState?.left ?? 0) + 32;
+    let paddingY = (lastWindowState?.top ?? 0) + 32;
+
+    if (paddingX + w > innerWidth) {
+        paddingX = 12;
     }
 
-    lastIndex++;
+    if (paddingY + h > innerHeight) {
+        paddingY = 6;
+    }
 
     return {
         width: w,
         height: h,
         minWidth,
         minHeight,
-        paddingX: lastIndex * 24 + 12,
-        paddingY: lastIndex * 28 + 6
+        paddingX,
+        paddingY
     };
 };
 
@@ -108,13 +109,17 @@ type WindowProps = {
     instance: ReduxInstance
 };
 
-function Window({ instance }: WindowProps) {
+const Window = memo(function Window({ instance }: WindowProps) {
     const apps = useContext(AppsContext);
     const app = apps[instance.appId];
 
+    console.log('rendered window');
+
     const dispatch = useDispatch();
 
-    const [ dimensions ] = useState(getWindowDimensions(instance.id, instance.window));
+    const store = useStore();
+
+    const [ dimensions ] = useState(() => getWindowDimensions(selectLastWindowState(store.getState())));
     const { width, height, minWidth, minHeight, paddingX, paddingY } = dimensions;
     const [ enabledTransitions, setEnabledTransitions ] = useState(true);
     const [ minimized, setMinimized ] = useState(false);
@@ -140,8 +145,8 @@ function Window({ instance }: WindowProps) {
             width: minWidth
         },
         initialOffset: {
-            top: paddingX,
-            left: paddingY
+            top: paddingY,
+            left: paddingX
         },
         initialSize: {
             height,
@@ -162,10 +167,12 @@ function Window({ instance }: WindowProps) {
                 minHeight,
                 minWidth,
                 height: size?.height ?? height,
-                width: size?.width ?? width
+                width: size?.width ?? width,
+                top: offset?.top ?? paddingY,
+                left: offset?.left ?? paddingX
             }
         }));
-    }, [dispatch, height, instance.id, minHeight, minWidth, size, width]);
+    }, [dispatch, instance, size, offset, minHeight, minWidth, height, width, paddingY, paddingX]);
 
     const onClickMinimize = () => {
         setMinimized(minimized => !minimized);
@@ -222,4 +229,4 @@ function Window({ instance }: WindowProps) {
             </div>
         </div>
     );
-}
+});

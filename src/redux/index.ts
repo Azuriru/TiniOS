@@ -27,6 +27,7 @@ import { TypedUseSelectorHook, useSelector as useReactSelector, useDispatch as u
 import counter from './counter';
 import apps from './apps';
 import instances from './instances';
+import { useStore as useReduxStore } from 'react-redux';
 
 export const store = configureStore({
     reducer: {
@@ -41,3 +42,4 @@ export type StoreDispatch = typeof store.dispatch;
 
 export const useSelector: TypedUseSelectorHook<RootState> = useReactSelector;
 export const useDispatch: () => StoreDispatch = useReactDispatch;
+export const useStore = () => useReduxStore<RootState>();

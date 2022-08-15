@@ -2,11 +2,13 @@ import { createEntityAdapter, createSelector, createSlice, PayloadAction } from 
 import { RootState } from '.';
 import { Size } from '../hooks/useMouseTransform';
 
-type WindowState = {
+export type WindowState = {
     width: number;
     height: number;
     minWidth: number;
     minHeight: number;
+    top: number;
+    left: number;
 };
 
 type NewInstance = {
@@ -29,7 +31,8 @@ const instances = createSlice({
     name: 'instances',
     initialState: instancesAdapter.getInitialState({
         lastId: 0,
-        lastZIndex: 0
+        lastZIndex: 0,
+        lastWindowState: undefined as WindowState | undefined
     }),
     reducers: {
         // getlastInstanceIndex(state, action: PayloadAction<>) {
@@ -62,9 +65,14 @@ const instances = createSlice({
                 for (const key in action.payload.state) {
                     const _key = key as keyof WindowState;
 
-                    entity.window = entity.window ?? {} as WindowState;
-                    entity.window[_key] = action.payload.state[_key];
+                    if (!entity.window) {
+                        entity.window = action.payload.state;
+                    } else {
+                        entity.window[_key] = action.payload.state[_key];
+                    }
                 }
+
+                state.lastWindowState = entity.window;
             }
         }
     }
@@ -79,6 +87,11 @@ export const { selectAll: selectAllInstances } = instancesAdapter.getSelectors<R
 export const selectLastFocused = createSelector(
     (state: RootState) => state.instances,
     state => state.entities[state.lastZIndex]
+);
+
+export const selectLastWindowState = createSelector(
+    (state: RootState) => state.instances,
+    state => state.lastWindowState
 );
 
 export default instances.reducer;

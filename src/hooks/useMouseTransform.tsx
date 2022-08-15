@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useMemo, RefObject } from 'react';
 import useMouseTracker from './useMouseTracker.old';
 import assert from 'assertmin';
+import { shallowMerge } from '../util/object';
 
 export type Size = {
     width: number;
@@ -127,13 +128,13 @@ export default function useMouseTransform(
 
             // Only set the state when a relevant field has been updated
             if (newWidth !== undefined || newHeight !== undefined) {
-                setSize(size => ({
+                setSize(size => shallowMerge(size, {
                     width: newWidth ?? size?.width ?? 0,
                     height: newHeight ?? size?.height ?? 0
                 }));
             }
             if (newTop !== undefined || newLeft !== undefined) {
-                setOffset(offset => ({
+                setOffset(offset => shallowMerge(offset, {
                     top: newTop ?? offset?.top ?? 0,
                     left: newLeft ?? offset?.left ?? 0
                 }));
