@@ -65,12 +65,10 @@ const instances = createSlice({
                 for (const key in action.payload.state) {
                     const _key = key as keyof WindowState;
 
-                    if (!entity.window) {
-                        entity.window = action.payload.state;
-                    } else {
-                        entity.window[_key] = action.payload.state[_key];
-                    }
+                    entity.window = entity.window ?? {} as WindowState;
+                    entity.window[_key] = action.payload.state[_key];
                 }
+            }
 
                 state.lastWindowState = entity.window;
             }
@@ -89,9 +87,17 @@ export const selectLastFocused = createSelector(
     state => state.entities[state.lastZIndex]
 );
 
-export const selectLastWindowState = createSelector(
+export const selectByAppId = (appId: string) => createSelector(
     (state: RootState) => state.instances,
-    state => state.lastWindowState
+    state => Object.values(state.entities).filter(instance => instance?.appId === appId)
+);
+
+export const selectInstancesByAppId = createSelector(
+    [
+        (state: RootState) => state.instances,
+        (state, appId: string) => appId
+    ],
+    (instances, appId) => Object.values(instances.entities).filter(instance => instance?.appId === appId)
 );
 
 export default instances.reducer;

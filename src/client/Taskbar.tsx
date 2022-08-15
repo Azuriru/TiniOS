@@ -6,8 +6,8 @@ import { removeByIndex, updateByIndex, appender } from '../util/array';
 import { Start } from './Start';
 
 import classNames from 'classnames';
-import { addInstance } from '../redux/instances';
-import { useDispatch } from '../redux';
+import { addInstance, selectAllInstances, selectByAppId } from '../redux/instances';
+import { useDispatch, useSelector } from '../redux';
 
 import './Taskbar.css';
 
@@ -82,6 +82,8 @@ type AppProps = {
 
 export function App({ name }: AppProps) {
     const [ hovered, setHovered ] = useState(false);
+    const [ instanceCount, setInstanceCount ] = useState(selectByAppId(name).length);
+
     const dispatch = useDispatch();
 
     const onMouseEnter = () => {
@@ -113,7 +115,10 @@ export function App({ name }: AppProps) {
                     <Icon>api</Icon>
                 </div>
             </div>
-            <div className="panels">
+            <div class="panels">
+                {instanceCount === 1 && <Panel/>}
+                {instanceCount === 2 && <Panel/>}
+                {instanceCount > 2 && <Panel/>}
             </div>
         </div>
     );
