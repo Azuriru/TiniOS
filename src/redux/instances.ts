@@ -19,8 +19,54 @@ type NewInstance = {
 };
 
 export type Instance = NewInstance & {
+    window: WindowState;
     id: number;
     zIndex: number;
+};
+
+
+
+// An excellent name of our accumulated genius,
+// Dimensions by boo and Window by yours truly. WinDim
+type WindowDimensions = {
+    width: number;
+    height: number;
+    minWidth: number;
+    minHeight: number;
+};
+
+// Defaults
+const defaultDimensions = {
+    width: 300,
+    height: 180,
+    minWidth: 180,
+    minHeight: 90
+};
+
+const getWindowDimensions = (lastWindowState?: WindowState, { width, height, minWidth, minHeight }: WindowDimensions = defaultDimensions): WindowState => {
+    const { innerWidth, innerHeight } = window;
+    const w = width < minWidth ? minWidth : width;
+    const h = height < minHeight ? minHeight : height;
+
+    let left = (lastWindowState?.left ?? 0) + 32;
+    let top = (lastWindowState?.top ?? 0) + 32;
+
+    if (left + w > innerWidth) {
+        left = 12;
+    }
+
+    if (top + h > innerHeight) {
+        top = 6;
+    }
+
+    return {
+        width: w,
+        height: h,
+        minWidth,
+        minHeight,
+        left,
+        top
+    };
 };
 
 const instancesAdapter = createEntityAdapter<Instance>({
@@ -39,11 +85,15 @@ const instances = createSlice({
 
         // },
         addInstance(state, action: PayloadAction<NewInstance>) {
-            instancesAdapter.addOne(state, {
+            const newInstance = {
                 ...action.payload,
+                window: action.payload.window ?? getWindowDimensions(state.lastWindowState),
                 id: ++state.lastId,
                 zIndex: ++state.lastZIndex
-            });
+            };
+            instancesAdapter.addOne(state, newInstance);
+
+            state.lastWindowState = newInstance.window;
         },
         addInstances(state, action: PayloadAction<{ instances: Instance[] }>) {
             instancesAdapter.setAll(state, action.payload.instances);
@@ -68,7 +118,6 @@ const instances = createSlice({
                     entity.window = entity.window ?? {} as WindowState;
                     entity.window[_key] = action.payload.state[_key];
                 }
-            }
 
                 state.lastWindowState = entity.window;
             }
@@ -78,13 +127,18 @@ const instances = createSlice({
 
 export const { addInstance, addInstances, deleteInstance, focusInstance, updateInstanceWindow } = instances.actions;
 
-export const { selectAll: selectAllInstances } = instancesAdapter.getSelectors<RootState>(
+export const { selectAll: selectAllInstances, selectById: selectInstanceById, selectIds: selectInstanceIds } = instancesAdapter.getSelectors<RootState>(
     state => state.instances
 );
 
 export const selectLastFocused = createSelector(
     (state: RootState) => state.instances,
     state => state.entities[state.lastZIndex]
+);
+
+export const selectLastWindowState = createSelector(
+    (state: RootState) => state.instances,
+    state => state.lastWindowState
 );
 
 export const selectByAppId = (appId: string) => createSelector(
@@ -94,10 +148,10 @@ export const selectByAppId = (appId: string) => createSelector(
 
 export const selectInstancesByAppId = createSelector(
     [
-        (state: RootState) => state.instances,
-        (state, appId: string) => appId
+        (state: RootState) => state.instances.entities,
+        (_, appId: string) => appId
     ],
-    (instances, appId) => Object.values(instances.entities).filter(instance => instance?.appId === appId)
+    (entities, appId) => Object.values(entities).filter(instance => instance?.appId === appId)
 );
 
 export default instances.reducer;
