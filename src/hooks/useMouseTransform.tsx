@@ -106,7 +106,7 @@ export default function useMouseTransform(
             // We only have to do this in the "up" and "left" directions, because
             // those are the directions that impact the translation transform
             // Therefore we can't just rely on min-height and min-width to deal with it
-            if (minSize !== undefined && (direction & Direction.Up || direction & Direction.Left)) {
+            if (minSize !== undefined) {
                 if (direction & Direction.Up) {
                     assert.unchecked(newHeight !== undefined);
                     assert.unchecked(newTop !== undefined);
@@ -116,12 +116,26 @@ export default function useMouseTransform(
                     newHeight = clampedHeight;
                 }
 
+                if (direction & Direction.Down) {
+                    assert.unchecked(newHeight !== undefined);
+
+                    const clampedHeight = Math.max(minSize.height, newHeight);
+                    newHeight = clampedHeight;
+                }
+
                 if (direction & Direction.Left) {
                     assert.unchecked(newWidth !== undefined);
                     assert.unchecked(newLeft !== undefined);
 
                     const clampedWidth = Math.max(minSize.width, newWidth);
                     newLeft -= clampedWidth - newWidth;
+                    newWidth = clampedWidth;
+                }
+
+                if (direction & Direction.Right) {
+                    assert.unchecked(newWidth !== undefined);
+
+                    const clampedWidth = Math.max(minSize.width, newWidth);
                     newWidth = clampedWidth;
                 }
             }
@@ -148,8 +162,8 @@ export default function useMouseTransform(
         return useMemo(() => {
             return {
                 transform: `translate(${offset?.left ?? 0}px, ${offset?.top ?? 0}px)`,
-                minWidth: minSize?.width,
-                minHeight: minSize?.height,
+                // minWidth: minSize?.width,
+                // minHeight: minSize?.height,
                 width: size?.width ?? initialSize?.width,
                 height: size?.height ?? initialSize?.height,
                 ...rest
