@@ -6,7 +6,7 @@ import { removeByIndex, updateByIndex, appender } from '../util/array';
 import { Start } from './Start';
 
 import classNames from 'classnames';
-import { addInstance, selectAllInstances, selectByAppId } from '../redux/instances';
+import { addInstance, selectAllInstances, selectByAppId, selectInstancesByAppId } from '../redux/instances';
 import { useDispatch, useSelector } from '../redux';
 
 import './Taskbar.css';
@@ -82,7 +82,7 @@ type AppProps = {
 
 export function App({ name }: AppProps) {
     const [ hovered, setHovered ] = useState(false);
-    const [ instanceCount, setInstanceCount ] = useState(selectByAppId(name).length);
+    const instanceCount = useSelector(state => selectInstancesByAppId(state, name).length);
 
     const dispatch = useDispatch();
 
@@ -100,6 +100,20 @@ export function App({ name }: AppProps) {
                 appId: name
             })
         );
+        // let count = 10;
+        // const cb = () => {
+        //     count--;
+        //     if (count === 0) return;
+
+        //     dispatch(
+        //         addInstance({
+        //             appId: name
+        //         })
+        //     );
+
+        //     requestAnimationFrame(cb);
+        // };
+        // requestAnimationFrame(cb);
     };
 
     return (

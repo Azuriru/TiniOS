@@ -1,68 +1,27 @@
-import { useDispatch, useSelector, useStore } from '../redux';
-import { deleteInstance, focusInstance, selectAllInstances, selectLastWindowState, updateInstanceWindow, WindowState } from '../redux/instances';
-import { Instance as ReduxInstance } from '../redux/instances';
+import { useDispatch, useSelector } from '../redux';
+import { deleteInstance, focusInstance, selectInstanceById, selectInstanceIds, updateInstanceWindow } from '../redux/instances';
 
 import classNames from 'classnames';
 import { useContext, useState, useRef, memo, MouseEvent, useMemo, ReactEventHandler, useEffect, SetStateAction, Dispatch } from 'react';
 import { AppsContext } from '../components/AppsContext';
 import useMouseTransform from '../hooks/useMouseTransform';
+import { useEvent } from '../hooks/useEvent';
 
 import './Desktop.css';
+import { EntityId } from '@reduxjs/toolkit';
 
 export function Desktop() {
-    const instances = useSelector(selectAllInstances);
+    // FIXME: This component renders twice when an instance is added
+    const instanceIds = useSelector(selectInstanceIds);
 
     return (
         <div className="desktop">
             <div class="windows">
-                {instances.map(inst => <Window key={inst.id} instance={inst} />)}
+                {instanceIds.map(id => <Window key={id} instanceId={id} />)}
             </div>
         </div>
     );
 }
-
-// An excellent name of our accumulated genius,
-// Dimensions by boo and Window by yours truly. WinDim
-type WindowDimensions = {
-    width: number;
-    height: number;
-    minWidth: number;
-    minHeight: number;
-};
-
-// Defaults
-const defaultDimensions = {
-    width: 200,
-    height: 120,
-    minWidth: 100,
-    minHeight: 60
-};
-
-const getWindowDimensions = (lastWindowState?: WindowState, { width, height, minWidth, minHeight }: WindowDimensions = defaultDimensions) => {
-    const { innerWidth, innerHeight } = window;
-    const w = width < minWidth ? minWidth : width;
-    const h = height < minHeight ? minHeight : height;
-
-    let paddingX = (lastWindowState?.left ?? 0) + 32;
-    let paddingY = (lastWindowState?.top ?? 0) + 32;
-
-    if (paddingX + w > innerWidth) {
-        paddingX = 12;
-    }
-
-    if (paddingY + h > innerHeight) {
-        paddingY = 6;
-    }
-
-    return {
-        width: w,
-        height: h,
-        minWidth,
-        minHeight,
-        paddingX,
-        paddingY
-    };
-};
 
 type HandleProps = {
     dir: string;
@@ -106,21 +65,18 @@ const WindowButton = memo(function WindowButton({ type, onClick }: WindowButtonP
 });
 
 type WindowProps = {
-    instance: ReduxInstance
+    instanceId: EntityId;
 };
 
-const Window = memo(function Window({ instance }: WindowProps) {
+const Window = memo(function Window({ instanceId }: WindowProps) {
+    const instance = useSelector(state => selectInstanceById(state, instanceId)!);
+
     const apps = useContext(AppsContext);
     const app = apps[instance.appId];
 
-    console.log('rendered window');
-
     const dispatch = useDispatch();
 
-    const store = useStore();
-
-    const [ dimensions ] = useState(() => getWindowDimensions(selectLastWindowState(store.getState())));
-    const { width, height, minWidth, minHeight, paddingX, paddingY } = dimensions;
+    const { width, height, minWidth, minHeight, left, top } = instance.window;
     const [ enabledTransitions, setEnabledTransitions ] = useState(true);
     const [ minimized, setMinimized ] = useState(false);
     const [ maximized, setMaximized ] = useState(false);
@@ -145,8 +101,8 @@ const Window = memo(function Window({ instance }: WindowProps) {
             width: minWidth
         },
         initialOffset: {
-            top: paddingY,
-            left: paddingX
+            top,
+            left
         },
         initialSize: {
             height,
@@ -168,21 +124,21 @@ const Window = memo(function Window({ instance }: WindowProps) {
                 minWidth,
                 height: size?.height ?? height,
                 width: size?.width ?? width,
-                top: offset?.top ?? paddingY,
-                left: offset?.left ?? paddingX
+                top: offset?.top ?? top,
+                left: offset?.left ?? left
             }
         }));
-    }, [dispatch, instance, size, offset, minHeight, minWidth, height, width, paddingY, paddingX]);
+    }, [dispatch, instance.id, size, offset, minHeight, minWidth, height, width, top, left]);
 
-    const onClickMinimize = () => {
+    const onClickMinimize = useEvent(() => {
         setMinimized(minimized => !minimized);
-    };
-    const onClickMaximized = () => {
+    });
+    const onClickMaximized = useEvent(() => {
         setMaximized(maximized => !maximized);
-    };
-    const onClickClose = () => {
+    });
+    const onClickClose = useEvent(() => {
         dispatch(deleteInstance(instance.id));
-    };
+    });
 
     const onFocus = () => {
         dispatch(focusInstance(instance.id));
