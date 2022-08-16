@@ -130,8 +130,8 @@ export function App({ name }: AppProps) {
                 </div>
             </div>
             <div class="panels">
-                {instanceCount === 1 && <Panel/>}
-                {instanceCount === 2 && <Panel/>}
+                {instanceCount > 0 && <Panel/>}
+                {instanceCount > 1 && <Panel/>}
                 {instanceCount > 2 && <Panel/>}
             </div>
         </div>
