@@ -44,6 +44,9 @@
         // I have enough self control to know when `any` is a good choice
         "@typescript-eslint/no-explicit-any": "off",
 
+        // Same thing here.
+        "@typescript-eslint/no-non-null-assertion": "off",
+
         // I want to use hasOwnProperty
         "no-prototype-builtins": "off",
 
