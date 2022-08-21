@@ -37,8 +37,9 @@ export default function AppsContextComponent({ children }: AppsContextComponentP
             const copy = {...instances};
 
             for (const appId of appIds) {
-                if (!(appId in copy)) {
-                    const App = defaultApps[appId].class;
+                const App = defaultApps[appId].class;
+
+                if (!(appId in copy) || copy[appId].constructor !== App) {
                     copy[appId] = new App(globalApp);
                 }
             }

@@ -9,7 +9,7 @@ class VSC {
     render(instance: Instance) {
         return (
             <div>
-                vsc? {instance.id}
+                Code {instance.id}
             </div>
         );
     }

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from '../redux';
-import { deleteInstance, focusInstance, selectInstanceById, selectInstanceIds, updateInstanceWindow } from '../redux/instances';
+import { actions, selectInstanceById, selectInstanceIds } from '../redux/instances';
 
 import classNames from 'classnames';
 import { useContext, useState, useRef, memo, MouseEvent, useMemo, ReactEventHandler, useEffect, SetStateAction, Dispatch } from 'react';
@@ -7,8 +7,11 @@ import { AppsContext } from '../components/AppsContext';
 import useMouseTransform from '../hooks/useMouseTransform';
 import { useEvent } from '../hooks/useEvent';
 
+import { multiref } from '../util/react';
+
 import './Desktop.css';
 import { EntityId } from '@reduxjs/toolkit';
+import { useAnimationState } from '../hooks/useAnimationState';
 
 export function Desktop() {
     // FIXME: This component renders twice when an instance is added
@@ -76,10 +79,9 @@ const Window = memo(function Window({ instanceId }: WindowProps) {
 
     const dispatch = useDispatch();
 
-    const { width, height, minWidth, minHeight, left, top } = instance.window;
+    const { width, height, minWidth, minHeight, left, top, visibleState } = instance.window;
     const [ enabledTransitions, setEnabledTransitions ] = useState(true);
-    const [ minimized, setMinimized ] = useState(false);
-    const [ maximized, setMaximized ] = useState(false);
+    const { ref, shouldAnimate, shouldRemove, endTransition } = useAnimationState(visibleState, visibleState === 'minimized');
 
     const win = useRef<HTMLDivElement>(null);
     const {
@@ -117,7 +119,7 @@ const Window = memo(function Window({ instanceId }: WindowProps) {
     const styles = useStyles(restStyles);
 
     useEffect(() => {
-        dispatch(updateInstanceWindow({
+        dispatch(actions.updateInstanceWindow({
             id: instance.id,
             state: {
                 minHeight,
@@ -125,42 +127,49 @@ const Window = memo(function Window({ instanceId }: WindowProps) {
                 height: size?.height ?? height,
                 width: size?.width ?? width,
                 top: offset?.top ?? top,
-                left: offset?.left ?? left
+                left: offset?.left ?? left,
+                visibleState: visibleState
             }
         }));
-    }, [dispatch, instance.id, size, offset, minHeight, minWidth, height, width, top, left]);
+    }, [dispatch, instance.id, size, offset, minHeight, minWidth, height, width, top, left, visibleState]);
 
     const onClickMinimize = useEvent(() => {
-        setMinimized(minimized => !minimized);
+        dispatch(actions.minimize(instance.id));
     });
     const onClickMaximized = useEvent(() => {
-        setMaximized(maximized => !maximized);
+        dispatch(actions.maximize(instance.id));
     });
     const onClickClose = useEvent(() => {
-        dispatch(deleteInstance(instance.id));
+        dispatch(actions.deleteInstance(instance.id));
     });
 
-    const onFocus = () => {
-        dispatch(focusInstance(instance.id));
-    };
+    const onFocus = useEvent(() => {
+        dispatch(actions.focusInstance(instance.id));
+    });
 
-    const onMouseDown = (e: MouseEvent): void => {
+    const onMouseDown = useEvent((e: MouseEvent): void => {
         setEnabledTransitions(false);
         startTrackingMouseDrag(e);
-    };
-    const onMouseUp = (): void => {
+    });
+    const onMouseUp = useEvent((): void => {
         setEnabledTransitions(true);
-    };
+    });
+
+    if (shouldRemove) {
+        console.log('hiding window', visibleState);
+        return null;
+    }
 
     return (
         <div
-            class={classNames('window', minimized && 'minimized', maximized && 'maximized')}
+            class={classNames('window', shouldAnimate && visibleState, !shouldAnimate && 'appearing')}
             style={{
                 transition: enabledTransitions ? '.3s' : 'none',
                 ...styles
             }}
+            onTransitionEnd={endTransition}
             onMouseDown={onFocus}
-            ref={win}
+            ref={multiref(win, ref)}
         >
             <div class="titlebar" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
                 <div class="title">{instance.appId}</div>

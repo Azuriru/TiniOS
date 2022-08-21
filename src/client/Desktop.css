@@ -22,6 +22,13 @@
     /* transition: .3s; */
     background-color: rgb(255, 255, 255, .1);
     border: 1px solid var(--windows);
+    top: 0;
+    opacity: 1;
+}
+
+.window.appearing {
+    margin-top: 20px;
+    opacity: 0;
 }
 
 .window.minimized {

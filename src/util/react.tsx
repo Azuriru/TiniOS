@@ -1,4 +1,4 @@
-import { Component, FC, ReactNode } from "react";
+import { Component, FC, MutableRefObject, ReactNode } from "react";
 
 export function nested(...components: (FC | typeof Component | Record<string, any>)[]): JSX.Element {
     if (components.length === 0) {
@@ -21,4 +21,14 @@ export function nested(...components: (FC | typeof Component | Record<string, an
     }
 
     return <>{child}</>;
+}
+
+export function multiref(...refs: MutableRefObject<Element | null>[]): (elem: Element | null) => void {
+    const callback = ((elem: Element) => {
+        for (const ref of refs) {
+            ref.current = elem;
+        }
+    });
+
+    return callback;
 }

@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import Icon from '../components/Icon';
 import Clock from '../components/Clock';
 import { removeByIndex, updateByIndex, appender } from '../util/array';
 import { Start } from './Start';
 
 import classNames from 'classnames';
-import { addInstance, selectAllInstances, selectByAppId, selectInstancesByAppId } from '../redux/instances';
-import { useDispatch, useSelector } from '../redux';
+import { actions, selectAllInstances, selectByAppId, selectInstancesByAppId } from '../redux/instances';
+import { useDispatch, useSelector, useStore } from '../redux';
 
 import './Taskbar.css';
+import { useEvent } from '../hooks/useEvent';
 
 type AppPreview = {
     name: string;
@@ -82,6 +83,7 @@ type AppProps = {
 
 export function App({ name }: AppProps) {
     const [ hovered, setHovered ] = useState(false);
+    const store = useStore();
     const instanceCount = useSelector(state => selectInstancesByAppId(state, name).length);
 
     const dispatch = useDispatch();
@@ -94,27 +96,41 @@ export function App({ name }: AppProps) {
         setHovered(false);
     };
 
-    const onClick = () => {
+    const onClick = (e: MouseEvent) => {
         dispatch(
-            addInstance({
+            actions.addInstance({
                 appId: name
             })
         );
-        // let count = 10;
-        // const cb = () => {
-        //     count--;
-        //     if (count === 0) return;
 
-        //     dispatch(
-        //         addInstance({
-        //             appId: name
-        //         })
-        //     );
+        if (!e.ctrlKey) return;
 
-        //     requestAnimationFrame(cb);
-        // };
-        // requestAnimationFrame(cb);
+        let count = e.shiftKey ? 100 : 10;
+        const cb = () => {
+            count--;
+            if (count === 0) return;
+
+            dispatch(
+                actions.addInstance({
+                    appId: name
+                })
+            );
+
+            requestAnimationFrame(cb);
+        };
+        requestAnimationFrame(cb);
     };
+
+    const onAuxClick = useEvent((e: MouseEvent) => {
+        if (e.button === 1) {
+            dispatch(actions.minimizeByAppId(name));
+        }
+    });
+
+    const onContextMenu = useEvent((e: MouseEvent) => {
+        e.preventDefault();
+        dispatch(actions.openByAppId(name));
+    });
 
     return (
         <div
@@ -123,6 +139,8 @@ export function App({ name }: AppProps) {
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onClick={onClick}
+            onAuxClick={onAuxClick}
+            onContextMenu={onContextMenu}
         >
             <div className="icon">
                 <div className={name}>

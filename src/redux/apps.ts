@@ -1,8 +1,6 @@
 import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
 
-import * as defaultApps from '../apps';
-
 const defaults = {
     name: 'My App',
     icon: '',
@@ -39,7 +37,7 @@ type AppOptions = {
     docked?: boolean;
     pinned?: boolean;
     startup?: boolean;
-}
+};
 
 type AppWindow = {
     width?: number;
@@ -47,9 +45,9 @@ type AppWindow = {
     minWidth?: number;
     minHeight?: number;
     state?: string;
-}
+};
 
-type App = {
+export type App = {
     id: string;
     name?: string;
     icon?: string;
@@ -65,15 +63,7 @@ const appsAdapter = createEntityAdapter<App>({
 
 const apps = createSlice({
     name: 'apps',
-    initialState: () => {
-        let state = appsAdapter.getInitialState();
-
-        const apps = Object.values(defaultApps).map(app => app.manifest as App);
-
-        state = appsAdapter.addMany(state, apps);
-
-        return state;
-    },
+    initialState: appsAdapter.getInitialState(),
     reducers: {
         addApp: appsAdapter.addOne,
         addApps(state, action: PayloadAction<{ apps: App[] }>) {

@@ -1,6 +1,8 @@
-import { createEntityAdapter, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSelector, createSlice, EntityId, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
 import { Size } from '../hooks/useMouseTransform';
+
+type VisibilityState = 'windowed' | 'maximized' | 'minimized';
 
 export type WindowState = {
     width: number;
@@ -9,6 +11,7 @@ export type WindowState = {
     minHeight: number;
     top: number;
     left: number;
+    visibleState: VisibilityState;
 };
 
 type NewInstance = {
@@ -65,7 +68,8 @@ const getWindowDimensions = (lastWindowState?: WindowState, { width, height, min
         minWidth,
         minHeight,
         left,
-        top
+        top,
+        visibleState: 'windowed'
     };
 };
 
@@ -116,16 +120,58 @@ const instances = createSlice({
                     const _key = key as keyof WindowState;
 
                     entity.window = entity.window ?? {} as WindowState;
-                    entity.window[_key] = action.payload.state[_key];
+                    entity.window[_key] = action.payload.state[_key] as never;
                 }
 
                 state.lastWindowState = entity.window;
             }
+        },
+        minimizeByAppId(state, action: PayloadAction<EntityId>) {
+            for (const id of state.ids) {
+                const entity = state.entities[id]!;
+
+                if (entity.appId !== action.payload) continue;
+
+                entity.window.visibleState = 'minimized';
+            }
+        },
+        openByAppId(state, action: PayloadAction<EntityId>) {
+            for (const id of state.ids) {
+                const entity = state.entities[id]!;
+
+                if (entity.appId !== action.payload) continue;
+
+                entity.window.visibleState = 'windowed';
+            }
+        },
+        minimize(state, action: PayloadAction<EntityId>) {
+            const entity = state.entities[action.payload];
+
+            if (entity) {
+                if (entity.window.visibleState !== 'minimized') {
+                    entity.window.visibleState = 'minimized';
+                } else {
+                    entity.window.visibleState = 'windowed';
+                }
+            }
+        },
+        maximize(state, action: PayloadAction<EntityId>) {
+            const entity = state.entities[action.payload];
+
+            if (entity) {
+                if (entity.window.visibleState !== 'maximized') {
+                    entity.window.visibleState = 'maximized';
+                } else {
+                    entity.window.visibleState = 'windowed';
+                }
+            }
+
         }
     }
 });
 
-export const { addInstance, addInstances, deleteInstance, focusInstance, updateInstanceWindow } = instances.actions;
+// export const { addInstance, addInstances, deleteInstance, focusInstance, updateInstanceWindow, minimizeByAppId, maximizeByAppId, minimize, maximize } = instances.actions;
+export const { actions } = instances;
 
 export const { selectAll: selectAllInstances, selectById: selectInstanceById, selectIds: selectInstanceIds } = instancesAdapter.getSelectors<RootState>(
     state => state.instances
