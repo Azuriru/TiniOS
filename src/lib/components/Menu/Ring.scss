@@ -1,0 +1,128 @@
+// Animations
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+:root {
+    --rotate-slow: rotate 90s linear infinite; // Good god that's slow.
+    --rotate: rotate 60s linear infinite;
+    --rotate-star: rotate 20s linear infinite;
+    --rotate-star-fast: rotate 7s linear infinite;
+}
+
+.anim-rotate {
+    animation: var(--rotate);
+}
+
+.anim-rotate-slow {
+    animation: var(--rotate-slow);
+}
+
+.absolute {
+    position: absolute;
+}
+
+// Sizes
+$sizes: 220, 245, 284, 298, 348, 420, 490, 860, 940, 1110, 1130, 1200;
+
+@each $size in $sizes {
+    .size-#{$size} {
+        height: #{$size}px;
+        width: #{$size}px;
+    }
+}
+
+// Borders
+.dotted {
+    background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='198' height='198' fill='none' x='1' y='1' stroke='white' stroke-width='1' stroke-dasharray='0 3' stroke-dashoffset='0' stroke-linecap='round'/%3E%3C/svg%3E") center / cover;
+}
+
+.dotted-wider {
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='96' height='96' fill='none' x='2' y='2' stroke='white' stroke-width='2' stroke-dasharray='0 8' stroke-dashoffset='0' stroke-linecap='round'/%3E%3C/svg%3E") center / cover;
+}
+
+.dotted-rounded {
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' version='1.1' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='60' r='58' stroke='white' stroke-width='1' stroke-dasharray='0 2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") center / cover;
+}
+
+.dotted-rounded.size-710 {
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' version='1.1' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='150' cy='150' r='148' stroke='white' stroke-width='1' stroke-dasharray='0 2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") center / cover;
+}
+
+.dotted-rounded.size-940 {
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' version='1.1' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='60' r='59.6' stroke='white' stroke-width='0.3' stroke-dasharray='0 0.6' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") center / cover;
+}
+
+.dotted-rounded-wider {
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' version='1.1' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='60' r='57' stroke='white' stroke-width='5' stroke-dasharray='0 10' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") center / cover;
+}
+
+.rounded {
+    border-radius: 50%;
+}
+
+// Rotates
+$degs: 45, 90, 135, 180, 225, 270, 315;
+
+@each $deg in $degs {
+    .rotate-#{$deg} {
+        transform: rotate(#{$deg}deg);
+    }
+}
+
+.opacity-3 {
+    opacity: .3;
+}
+
+.opacity-5 {
+    opacity: .5;
+}
+
+.opacity-7 {
+    opacity: .7;
+}
+
+.border-1 {
+    border: 1px solid white;
+}
+
+.border-2 {
+    border: 2px solid white;
+}
+
+// Teeny thing that's bothering me
+.border-2 .star {
+    &::before,
+    &::after {
+        top: -1px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    $sizes: (
+        220: 200,
+        245: 215,
+        284: 241,
+        298: 250,
+        348: 280,
+        420: 330,
+        490: 394,
+        860: 650,
+        940: 710,
+        1110: 900,
+        1130: 920,
+        1200: 990
+    );
+
+    @each $larger, $smaller in $sizes  {
+        .menu .size-#{$larger} {
+            height: #{$smaller}px;
+            width: #{$smaller}px;
+        }
+    }
+}

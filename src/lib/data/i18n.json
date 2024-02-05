@@ -1,0 +1,43 @@
+{
+    "goodbye-messages": [
+        "Thank you for four years of friendship and love",
+        "Till next time",
+        "Farewell",
+        "Sleep well",
+        "<3",
+        "Laters",
+        "See you",
+        "Love you",
+        "Sex ;^)"
+    ],
+    "quit-confirmation": [
+        {
+            "text": "Are you sure you want to leave?",
+            "y": "Yes",
+            "n": "No"
+        },
+        {
+            "text": "Why would you want to quit? How dare you",
+            "y": "Leave anyways",
+            "n": "Changed my mind",
+            "leave": "Bye ;w;"
+        },
+        {
+            "text": "Why :(",
+            "y": "Sorry",
+            "n": "Alright I'll stay",
+            "leave": "I'll miss you"
+        },
+        {
+            "text": "Stay with me, you don't need to run",
+            "y": "Gtfo",
+            "n": "Stay",
+            "leave": ">:v"
+        },
+        {
+            "text": "Really quit?",
+            "y": "Yes",
+            "n": "Wait go back"
+        }
+    ]
+}

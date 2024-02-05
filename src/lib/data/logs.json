@@ -1,0 +1,74 @@
+[
+    {
+        "name": "Classic human mistake",
+        "details": {
+            "content": [
+                "Sorry for earlier. Thought you'd appreciate this?",
+                "",
+                "We're all bound to repeat the same mistakes over and over again",
+                "",
+                "And I wish I could do something other than recite quotes but unfortunately I'm not that creative.",
+                "",
+                "I didn't mean to make you feel responsible for being my single point of failure, and you're not. I always thought of it as a joke cause of how much we spend our time together, although many a truth is spoken in jest",
+                "",
+                "I'm not sorry you felt that way because it was nice to have my best friend know they matter enough to me that I wouldn't really be alright without them, but being forced to stick with me was not my intention.",
+                "",
+                "We've had a lot of close encounters with a final encounter, but this one's hitting particularly close to the edge that I'm actually afraid. I would give anything to make shit alright again.",
+                "",
+                "I've got a long list of apologies I could make you read, though I don't think you're too fond of them, given how utterly useless they've proven themselves to be occasionally. Sorry doesn't change anything",
+                "",
+                "I also can't write anything without it sounding so.. isolated. Like each sentence is just standalone and doesn't really articulate well with the rest of the stuff on the page. I was never a good writer, anyways"
+            ],
+            "desc": "hah it died"
+        }
+    },
+    {
+        "name": "Appreciation",
+        "details": {
+            "content": [
+                "Thank you, for responding to that first message, for letting me leech off of you all these years, for helping me through it all, for letting me in, for holding my hand through every single simple little JS problem. Thank you for being the kindest person to me, and thank you for being honest with me. I could always expect to hear that from you, no matter the weather or the time of day",
+                "",
+                "Thank you for absolutely everything you have done for me, finished or not. Thanks for the pain you have caused me that made me who I am today, I don't just mean the bad times, really, if it weren't for your brutal honesty, I might still have been stuck in my own little world. Thanks for showing me the best and worst sides of you. Thank you for spending your days with me, thinking I was worthy of your time.",
+                "",
+                "You're absolutely amazing and I don't say it enough"
+            ],
+            "desc": "Tldr; I suck without you"
+        }
+    },
+    {
+        "name": "Pain vs Suffering",
+        "details": {
+            "content": [
+                "Do you know what the difference between pain and suffering is?",
+                "",
+                "You do? Great, you can move on to the next one now",
+                "",
+                "But if you feel like sitting through this then by all means lol",
+                "",
+                "Pain is temporary, like getting told to fuck off, or being ignored. It is bearable because there is an end to it, maybe it's not that near, but it is within the foreseeable future and the hope that it will all be over soon helps make it just a teeny tiny bit more manageable.",
+                "",
+                "Suffering on the other hand... Is not.",
+                "",
+                "Suffering is prolonged, unending, depressive and you see no end. It's like that hamster who was betrayed that it didn't even want its favorite food anymore. It is empty. It's what a life without you is like. But you already know that"
+            ]
+        }
+    },
+    {
+        "name": "Conclusion",
+        "details": {
+            "content": [
+                "Over the past few years, we've had a lot of different adventures in a lot of different places. I want the last page of my future adventure to be the adventure I had with you",
+                "",
+                "...",
+                "",
+                "...",
+                "",
+                "...",
+                "",
+                "Please don't leave me ;w;"
+            ],
+            "desc": "Epilogue. Sort of. I hope not.",
+            "favorite": true
+        }
+    }
+]

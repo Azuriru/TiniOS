@@ -3,6 +3,14 @@ node_modules/
 output/
 exports/
 releases/
+build/
+.svelte-kit/
+package/
+.env
+.env.*
+!.env.example
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
 
 # Incompatible lockfiles
 package-lock.json
@@ -17,3 +25,7 @@ package-lock.json
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# Old source files
+.src_react/
+.src_vanilla/
