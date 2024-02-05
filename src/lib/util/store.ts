@@ -1,12 +1,6 @@
 import { writable, get, type Subscriber, type Unsubscriber, type Updater, type Writable, type StartStopNotifier } from 'svelte/store';
 import { browser } from '$app/environment';
 
-type TransitioningTypes = ((res: void) => void) | null;
-export const transitioning = writable<TransitioningTypes>(null);
-
-type OnKeydownType = ((event: KeyboardEvent) => void);
-export const onKeydown = writable<OnKeydownType>(() => {});
-
 type StoreContract<T> = {
     subscribe(this: void, run: Subscriber<T>): Unsubscriber;
     set(this: void, value: T): void;

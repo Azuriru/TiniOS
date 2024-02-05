@@ -1,15 +1,3 @@
 {
-    "back": "back",
-    "home": {
-        "logs": "logs",
-        "unlock": "unlock",
-        "settings": "settings",
-        "exit": "exit"
-    },
-    "logs": {
-        "index": "index",
-        "keep": "keep",
-        "trash": "trash",
-        "import": "import"
-    }
+    "bun": "tini!"
 }

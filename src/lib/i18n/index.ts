@@ -16,11 +16,6 @@ export const config: Config = {
             locale: 'en',
             key: '',
             loader: async () => (await import('./en/main.json')).default,
-        },
-        {
-            locale: 'en',
-            key: 'settings',
-            loader: async () => (await import('./en/settings.json')).default,
         }
     ],
 };
