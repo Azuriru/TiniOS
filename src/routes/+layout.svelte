@@ -6,7 +6,7 @@
     <title>Tini</title>
 </svelte:head>
 
-<div class="main-screen">
+<div id="os">
     <slot />
 </div>
 
