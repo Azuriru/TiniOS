@@ -1,6 +1,6 @@
 <script lang="ts">
-    import Desktop from '$lib/components/layout/Desktop.svelte';
-    import Taskbar from '$lib/components/layout/Taskbar.svelte';
+    import Desktop from '$lib/client/Desktop.svelte';
+    import Taskbar from '$lib/client/Taskbar.svelte';
 </script>
 
 <Desktop />
