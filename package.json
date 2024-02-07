@@ -1,9 +1,9 @@
 {
-    "name": "tini-os",
-    "version": "0.0.3",
-    "description": "Electric Twogaloo: Thunder's Revenge",
-    "productName": "Thunder's Revenge",
-    "main": "main.js",
+	"name": "tini-os",
+	"version": "0.0.3",
+	"description": "Electric Twogaloo: Thunder's Revenge",
+	"productName": "Thunder's Revenge",
+	"main": "main.js",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -26,6 +26,7 @@
 		"eslint-plugin-import": "^2.29.1",
 		"eslint-plugin-n": "^16.6.2",
 		"eslint-plugin-promise": "^6.1.1",
+		"eslint-plugin-svelte": "^2.35.1",
 		"postcss": "^8.4.24",
 		"postcss-load-config": "^4.0.1",
 		"postcss-selector-matches": "^4.0.0",
@@ -38,13 +39,10 @@
 		"vite": "^5.0.0"
 	},
 	"type": "module",
-	"dependencies": {
-		"eslint-plugin-svelte": "^2.35.1"
+	"repository": {
+		"type": "git"
 	},
-    "repository": {
-        "type": "git"
-    },
-    "keywords": [],
-    "author": "Dorubyn",
-    "license": "ISC"
+	"keywords": [],
+	"author": "Dorubyn",
+	"license": "ISC"
 }

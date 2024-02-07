@@ -1,18 +1,66 @@
-@use 'sass:list';
+@use "sass:list";
+
+:root {
+    --color-rgb: 0, 255, 255;
+    // --background-url: url('./assets/desktop-wallpapers/Opalset.png');
+    --background-position-y: bottom;
+    --background-position-x: right;
+    --background-size: cover;
+    --background-repeat: no-repeat;
+    --background: var(--background-url) var(--background-position-x, center) var(--background-position-y, center) /
+        var(--background-size, cover) var(--background-repeat) fixed;
+    --start: hsla(0, 0%, 9%, var(--transparency-effects-start, 1));
+    --start-sidebar: hsla(0, 0%, 13%, var(--transparency-effects-start-sidebar, 1));
+    --start-context: hsla(0, 0%, 20%, var(--transparency-effects-start, 1));
+    --taskbar: hsla(0, 0%, 6%, var(--transparency-effects-taskbar, 1));
+    --previews: hsla(0, 0%, 16%, var(--transparency-effects-taskbar, 1));
+    --previews-hover: hsla(0, 1%, 25%, var(--transparency-effects-taskbar, 1));
+    --context-border: 69, 71, 74;
+    --windows: hsl(
+        var(--color-hue, 180),
+        var(--color-sat, 100%),
+        var(--color-lig, 25%),
+        var(--color-accent-windows, 0)
+    );
+    --blur: 5px;
+    --transition: 0.3s;
+}
+
+#OS {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--background);
+    filter: brightness(var(--brightness, 1)) contrast(var(--contrast, 1)) saturate(var(--saturate, 100%));
+}
+
+.hidden {
+    opacity: 0;
+}
 
 @mixin flex($props...) {
     display: flex;
 
-    @if not list.index($props, startY) {
-       align-items: center;
-    }
+    // @if not list.index($props, noGrow) {
+    //    flex-grow: 1;
+    // }
 
     @each $prop in $props {
         @if $prop == center {
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+        } @else if $prop == startY {
+            align-items: flex-start;
+        } @else if $prop == centerY {
+            align-items: center;
+        } @else if $prop == endY {
+            align-items: flex-end;
+        } @else if $prop == startX {
+            justify-content: flex-start;
         } @else if $prop == centerX {
             justify-content: center;
+        } @else if $prop == endX {
+            justify-content: flex-end;
         } @else if $prop == between {
             justify-content: space-between;
         } @else if $prop == around {

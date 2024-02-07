@@ -1,0 +1,10 @@
+{
+	"translate": {
+		"scope": "scss,css,svete",
+		"prefix": "f",
+		"body": [
+			"@include flex$1;$0",
+		],
+		"description": "Add flex"
+	}
+}

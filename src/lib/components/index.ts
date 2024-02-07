@@ -1,1 +1,1 @@
-export { default as FontAwesome } from './FontAwesome.svelte';
+export { default as Icon } from './Icon.svelte';
