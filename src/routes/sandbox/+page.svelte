@@ -1,3 +1,13 @@
+<script lang="ts">
+    import { store } from '$lib/redux';
+
+    // $: count2 = $baseStore.counter;
+    $: count = $store.counter;
+    // $: stored = $store;
+
+    $: console.log(count);
+</script>
+
 <div class="settings">
     <div class="text"></div>
     <div class="twinkle base rotated">
@@ -30,7 +40,12 @@
             display: block;
             width: 40px;
             height: 2px;
-            background: linear-gradient(to right, transparent, #5f91ff, transparent);
+            background: linear-gradient(
+                to right,
+                transparent,
+                #5f91ff,
+                transparent
+            );
             border-radius: 100%;
             position: absolute;
         }
@@ -52,7 +67,9 @@
         width: 40px;
         height: 40px;
         border-radius: 100%;
-        box-shadow: 0 0 2px 0px #5f91ff, inset 0 0 2px 0px #5f91ff;
+        box-shadow:
+            0 0 2px 0px #5f91ff,
+            inset 0 0 2px 0px #5f91ff;
 
         &::before,
         &::after {
@@ -60,7 +77,12 @@
             display: block;
             width: 100px;
             height: 1px;
-            background: linear-gradient(to right, transparent, #5f91ff, transparent);
+            background: linear-gradient(
+                to right,
+                transparent,
+                #5f91ff,
+                transparent
+            );
             position: absolute;
         }
 
@@ -76,7 +98,9 @@
             width: 4px;
             height: 4px;
             background: #ffffff;
-            box-shadow: 0 0 1px 1px #ffffff, 0 0 10px 4px #dee8ff;
+            box-shadow:
+                0 0 1px 1px #ffffff,
+                0 0 10px 4px #dee8ff;
             border-radius: 100%;
             z-index: 1;
         }
@@ -84,14 +108,21 @@
         .shimmer:nth-of-type(2) {
             width: 15px;
             height: 15px;
-            box-shadow: 0 0 2px 0px #5f91ff, 0 0 20px 0px #5f91ff, inset 0 0 5px 0px #5f91ff, 0 0 20px 2px #5f91ff;
+            box-shadow:
+                0 0 2px 0px #5f91ff,
+                0 0 20px 0px #5f91ff,
+                inset 0 0 5px 0px #5f91ff,
+                0 0 20px 2px #5f91ff;
             border-radius: 100%;
             z-index: 1;
         }
     }
 
     .shine {
-        box-shadow: 0 0 4px 4px #5f91ff, 0 0 20px 4px #ffffff, 0 0 20px 6px #83a9ff;
+        box-shadow:
+            0 0 4px 4px #5f91ff,
+            0 0 20px 4px #ffffff,
+            0 0 20px 6px #83a9ff;
 
         + .rotated {
             &::before,

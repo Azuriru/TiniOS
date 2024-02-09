@@ -50,11 +50,11 @@
 }
 
 @mixin flex($props...) {
-    display: flex;
-
-    // @if not list.index($props, noGrow) {
-    //    flex-grow: 1;
-    // }
+    @if list.index($props, hidden) {
+        display: none;
+    } @else {
+        display: flex;
+    }
 
     @each $prop in $props {
         @if $prop == center {
