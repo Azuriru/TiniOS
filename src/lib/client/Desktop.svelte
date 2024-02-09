@@ -3,7 +3,7 @@
 </div>
 
 <style lang="scss">
-    .desktop:not(.option-icon):not(.settings-main) {
+    .desktop {
         display: flex;
         /* align-items: center;
         justify-content: center; */

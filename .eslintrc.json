@@ -19,6 +19,7 @@
         ]
     },
     "plugins": [
+        "svelte-stylistic",
         "@typescript-eslint"
     ],
     "overrides": [
@@ -37,6 +38,7 @@
         }
     ],
     "rules": {
+        "svelte-stylistic/consistent-attribute-lines": "error",
         "@typescript-eslint/no-unused-vars": [
             "warn",
             {
@@ -182,7 +184,7 @@
             "warn",
             {
                 "multiline": 1,
-                "singleline": 2
+                "singleline": 4
             }
         ],
         "svelte/mustache-spacing": [

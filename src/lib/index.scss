@@ -2,7 +2,7 @@
 
 :root {
     --color-rgb: 0, 255, 255;
-    // --background-url: url('./assets/desktop-wallpapers/Opalset.png');
+    --background-url: url("/desktop-wallpapers/Opalset.png");
     --background-position-y: bottom;
     --background-position-x: right;
     --background-size: cover;
@@ -34,8 +34,19 @@
     filter: brightness(var(--brightness, 1)) contrast(var(--contrast, 1)) saturate(var(--saturate, 100%));
 }
 
+.buntini-icon {
+    mask-image: url(/Buntini.png);
+    mask-repeat: no-repeat;
+    mask-position: center;
+    background-image: linear-gradient(to bottom, rgba(65, 253, 250), rgba(35, 119, 237, 0.8));
+}
+
 .hidden {
     opacity: 0;
+}
+
+.material-icons {
+    user-select: none;
 }
 
 @mixin flex($props...) {

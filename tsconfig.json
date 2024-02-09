@@ -1,6 +1,6 @@
 {
-	"include": ["./src"],
-	// "exclude": [".src_react", ".src_vanilla"],
+	"include": ["src"],
+	"exclude": [".src_react", ".src_vanilla"],
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
 		"allowJs": false,

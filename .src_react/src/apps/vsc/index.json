@@ -1,0 +1,11 @@
+{
+    "id": "vsc",
+    "name": "VSC",
+    "icon": "",
+    "info": {
+        "version": "0.0.1"
+    },
+    "options": {
+        "maxSessions": "3"
+    }
+}

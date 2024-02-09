@@ -1,11 +1,10 @@
 <script lang="ts">
     import { Icon } from '$lib/components';
+    import Start from './Start.svelte';
 </script>
 
 <div class="taskbar">
-    <div class="start">
-        <!-- <Start /> -->
-    </div>
+    <Start />
     <div class="container">
         <div class="left">
             <div class="search">
@@ -38,7 +37,7 @@
         font-size: 12px;
 
         .container {
-            @include flex(centerY, between);
+            @include flex(centerY, between, one);
             background-color: var(--taskbar);
             backdrop-filter: blur(5px);
         }

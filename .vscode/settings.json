@@ -1,5 +1,7 @@
 {
-    "eslint.validate": ["svelte"],
+    "eslint.validate": [
+        "svelte"
+    ],
     "eslint.format.enable": true,
     "eslint.lintTask.enable": true,
     "eslint.workingDirectories": [],
