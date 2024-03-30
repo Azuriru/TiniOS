@@ -1,0 +1,93 @@
+{
+    "en": {
+        "settings": "Settings",
+        "settings-header": "Tini Settings",
+        "find-setting": "Find a setting",
+        "home": "Home",
+        "back": "Back",
+        "system": {
+            "header": "System",
+            "desc": "Display, sound, notifications, power",
+            "options": {
+                "display": "Display",
+                "brightness-color": "Brightness and color",
+                "brightness": "Change brightness for the built-in display",
+                "contrast": "Change contrast for the built-in display",
+                "saturation": "Change saturation for the built-in display",
+                "scale-layout": "Scale and layout",
+                "resolution": "Display resolution",
+                "orientation": "Display orientation",
+                "sound": "Sound",
+                "volume": "Master volume",
+                "power-sleep": "Power & sleep",
+                "screen": "Screen",
+                "screen-battery-power": "On battery power, turn off after",
+                "screen-charged-power": "When plugged in, turn off after",
+                "screen-battery-sleep": "On battery power, PC goes to sleep after",
+                "screen-charged-sleep": "When plugged in, PC goes to sleep after",
+                "clipboard": "Clipboard",
+                "clipboard-notice": "When you copy or cut something in Tini, it's copied to the clipboard for you to paste.",
+                "clipboard-history": "Clipboard history",
+                "clipboard-history-notice": "Save multiple items to the clipboard to use later. Press the windows logo key + V to view your clipboard history and paste from it.",
+                "clipboard-clear": "Clear clipboard data",
+                "clipboard-clear-info": "Clear all clipboard data on this device"
+            }
+        },
+        "personalization": {
+            "header": "Personalization",
+            "desc": "Background, colors",
+            "options": {
+                "desktop": "Desktop",
+                "background": "Background",
+                "background-fit": "Choose a fit",
+                "background-position-x": "Choose x-axis position",
+                "background-position-y": "Choose y-axis position",
+                "colors": "Colors",
+                "colors-choose": "Choose your color",
+                "colors-tini": "Tini colors",
+                "colors-more": "More options",
+                "transparency-effects": "Transparency effects",
+                "accent": "Show accent color on the following surfaces",
+                "accent-start-taskbar": "Start, taskbar",
+                "accent-titlebar": "Title bars and window borders",
+                "theme": "Choose your default app theme",
+                "start": "Start",
+                "start-all-programs": "Show all programs in Start menu",
+                "start-recent-apps": "Show recently used apps",
+                "start-full-screen": "Use Start full screen",
+                "taskbar": "Taskbar",
+                "taskbar-lock": "Lock the tasbar",
+                "taskbar-hide": "Automatically hide the taskbar",
+                "taskbar-buttons": "Use small taskbar buttons",
+                "taskbar-peek": "Use Peek to preview the desktop when you move your mouse to the Show desktop button at the end of the taskbar",
+                "taskbar-preview-hover": "Hover previews slightly above the taskbar",
+                "taskbar-location": "Taskbar location on screen",
+                "taskbar-buttons-combine": "Combine taskbar buttons"
+            }
+        },
+        "apps": {
+            "header": "Apps",
+            "desc": "Uninstall, defaults, optional features",
+            "options": {
+                "apps-features": "Apps & features",
+                "apps-notice": "If you would like to uninstall or move an app, select it from this list.",
+                "startup": "Startup",
+                "startup-apps": "Startup Apps",
+                "startup-notice": "Apps can be configured  to start when you log in. n most cases apps will start minimied or may only start a background task."
+            }
+        },
+        "time": {
+            "header": "Time & Language",
+            "desc": "Speech, region, date",
+            "options": {
+                "date-time": "Date & time",
+                "date-time-current": "Current date and time",
+                "time-zone": "Time zone",
+                "time-dst": "Adjust for daylight savings automatically",
+                "language": "Language",
+                "language-display": "Tini display language",
+                "language-display-notice": "Tini features like Settings and File Explorer will appear in this language"
+            }
+        }
+    }
+}

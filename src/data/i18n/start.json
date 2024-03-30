@@ -1,0 +1,38 @@
+{
+    "en": {
+        "sidebar": {
+            "menu": "Menu",
+            "account": "Account",
+            "settings": "Settings",
+            "power": "Power",
+            "power-context": {
+                "sleep": "Sleep",
+                "shut-down": "Shut down",
+                "restart": "Restart"
+            }
+        },
+        "main": {
+            "programs": "All Programs",
+            "back": "Back",
+            "search-placeholder": "Type here to search"
+        }
+    },
+    "es": {
+        "sidebar": {
+            "menu": "Menú",
+            "account": "Cuenta",
+            "settings": "Configuración",
+            "power": "Poder",
+            "power-context": {
+                "sleep": "Dormir",
+                "shut-down": "Apagar",
+                "restart": "Reiniciar"
+            }
+        },
+        "main": {
+            "programs": "Todos Programas",
+            "back": "Atrás",
+            "search-placeholder": "Escriba aquí para buscar"
+        }
+    }
+}
