@@ -1,3 +1,1 @@
-Project that was originally done in Dorui + Webpack but has been migrated to React + Redux because Doru has joined your party.
-
-Also because I can't keep secrets for shit and if he's going to spoil the surprise he may as well help out.
+Project that was originally built in Dorui then React+Redux and now it's final form will be in Svelte 5 with Vite and TypeScript. Yippee
