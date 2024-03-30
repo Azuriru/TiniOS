@@ -30,7 +30,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: var(--background);
+    background: linear-gradient(to right, rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.5)), var(--background);
     filter: brightness(var(--brightness, 1)) contrast(var(--contrast, 1)) saturate(var(--saturate, 100%));
 }
 
@@ -88,6 +88,8 @@
             flex: 0 1 auto;
         } @else if $prop == none {
             flex: none;
+        } @else if $prop == noShrink {
+            flex-shrink: 0;
         }
     }
 }

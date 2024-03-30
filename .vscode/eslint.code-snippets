@@ -1,0 +1,13 @@
+{
+    "rule": {
+        "scope": "jsonc",
+        "prefix": "rule",
+        "body": [
+            "\"@stylistic/$1\": [",
+            "\t\"warn\",",
+            "\t$2",
+            "],$0"
+        ],
+        "description": "Add eslint rule"
+    }
+}

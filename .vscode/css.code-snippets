@@ -1,6 +1,6 @@
 {
-	"translate": {
-		"scope": "scss,css,svete",
+	"flex": {
+		"scope": "scss,css,svelte",
 		"prefix": "f",
 		"body": [
 			"@include flex$1;$0",

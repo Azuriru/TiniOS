@@ -13,31 +13,32 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
-		"@fortawesome/fontawesome-free": "^6.4.2",
-		"@sveltejs/adapter-vercel": "^4.0.0",
-		"@sveltejs/kit": "^2.0.0",
+		"@fortawesome/fontawesome-free": "^6.5.1",
+		"@stylistic/eslint-plugin": "^1.6.3",
+		"@sveltejs/adapter-vercel": "^5.1.0",
+		"@sveltejs/kit": "^2.5.2",
 		"@sveltejs/vite-plugin-svelte": "^3.0.2",
-		"@typescript-eslint/eslint-plugin": "^6.18.1",
-		"@typescript-eslint/parser": "^6.18.1",
+		"@typescript-eslint/eslint-plugin": "^7.1.0",
+		"@typescript-eslint/parser": "^7.1.0",
 		"assertmin": "^0.3.5",
-		"autoprefixer": "^10.4.14",
-		"eslint": "^8.56.0",
-		"eslint-config-standard-with-typescript": "^43.0.0",
+		"autoprefixer": "^10.4.18",
+		"eslint": "^8.57.0",
+		"eslint-config-standard-with-typescript": "^43.0.1",
 		"eslint-plugin-import": "^2.29.1",
 		"eslint-plugin-n": "^16.6.2",
 		"eslint-plugin-promise": "^6.1.1",
-		"eslint-plugin-svelte": "2.36.0-next.5",
+		"eslint-plugin-svelte": "2.36.0-next.11",
 		"eslint-plugin-svelte-stylistic": "^0.0.4",
-		"postcss": "^8.4.24",
-		"postcss-load-config": "^4.0.1",
+		"postcss": "^8.4.35",
+		"postcss-load-config": "^5.0.3",
 		"postcss-selector-matches": "^4.0.0",
-		"sass": "^1.69.3",
-		"svelte": "^5.0.0-next.2",
-		"svelte-check": "^3.4.3",
+		"sass": "^1.71.1",
+		"svelte": "5.0.0-next.80",
+		"svelte-check": "^3.6.6",
 		"sveltekit-i18n": "^2.4.2",
-		"tslib": "^2.4.1",
-		"typescript": "^5.2.2",
-		"vite": "^5.0.3"
+		"tslib": "^2.6.2",
+		"typescript": "^5.3.3",
+		"vite": "^5.1.4"
 	},
 	"type": "module",
 	"repository": {
@@ -47,6 +48,10 @@
 	"author": "Dorubyn",
 	"license": "ISC",
 	"dependencies": {
-		"@reduxjs/toolkit": "^2.1.0"
+		"@csstools/postcss-sass": "^5.1.1",
+		"@reduxjs/toolkit": "^2.2.1",
+		"@stylistic/eslint-plugin-js": "^1.7.0",
+		"dorui": "^2.0.0",
+		"redux-persist": "^6.0.0"
 	}
 }

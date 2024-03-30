@@ -45,6 +45,7 @@
         .left,
         .right {
             @include flex;
+            height: 100%;
         }
 
         .search {

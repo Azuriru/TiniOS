@@ -1,17 +1,26 @@
 <script lang="ts">
     import { store } from '$lib/redux';
+    import { increment } from '$lib/redux/counter';
 
-    // $: count2 = $baseStore.counter;
     $: count = $store.counter;
-    // $: stored = $store;
-
-    $: console.log(count);
 </script>
 
+{#snippet a()}
+    <div class="asd">asd</div>
+{/snippet}
+
+<div class="parent">
+    {@render a()}
+</div>
+
+{count}
+
+<button type="button" on:click={() => store.dispatch(increment())}>plus</button>
+
 <div class="settings">
-    <div class="text"></div>
+    <div class="text" />
     <div class="twinkle base rotated">
-        <div class="trail"></div>
+        <div class="trail" />
     </div>
     <div class="twinkle base">
         <div class="shine" />
@@ -22,10 +31,28 @@
         <div class="shimmer" />
         <div class="twinkle base rotated" />
     </div>
-    <div class="s3"></div>
+    <div class="s3" />
 </div>
 
 <style lang="scss">
+    .parent {
+        isolation: isolate;
+    }
+
+    :global(.parent .asd) {
+        color: blue;
+    }
+
+    :global(.parent) {
+        .asd {
+            color: white;
+        }
+    }
+
+    .asd {
+        color: red;
+    }
+
     .base {
         display: flex;
         align-items: center;
@@ -36,7 +63,7 @@
     .twinkle {
         &::before,
         &::after {
-            content: '';
+            content: "";
             display: block;
             width: 40px;
             height: 2px;
@@ -73,7 +100,7 @@
 
         &::before,
         &::after {
-            content: '';
+            content: "";
             display: block;
             width: 100px;
             height: 1px;

@@ -14,7 +14,7 @@ export const stringify = (str: string) => normalize(str).toLowerCase().replace(/
 
 export const color = (str: string) => str.slice(4, -1).split(', ').map(Number);
 
-export const hsl = (str: string) => str.slice(4, -1).split(', ').map(s => parseInt(s));
+export const hsl = (str: string) => str.slice(4, -1).split(', ').map((s) => parseInt(s));
 
 export const needsChars = (str: string) => str.length < 8;
 
@@ -38,4 +38,4 @@ export const validateEmail = (email: string) => {
         .match(
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
-}
+};
